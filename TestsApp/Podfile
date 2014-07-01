@@ -1,0 +1,7 @@
+xcodeproj 'TestsApp'
+workspace '../SGAPI'
+link_with 'TestsAppTests'
+platform :ios, '7.0'
+
+pod 'SGAPI', :path => '../'
+pod 'Expecta'

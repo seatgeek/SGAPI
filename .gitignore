@@ -1,0 +1,4 @@
+.idea
+TestsApp/Pods
+Podfile.lock
+xcuserdata
