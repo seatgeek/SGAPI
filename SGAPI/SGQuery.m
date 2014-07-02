@@ -153,6 +153,14 @@ NSMutableDictionary *_globalParams;
     self.globalParameters[@"client_id"] = clientId;
 }
 
++ (void)setAid:(NSString *)aid {
+    self.globalParameters[@"aid"] = aid;
+}
+
++ (void)setRid:(NSString *)rid {
+    self.globalParameters[@"rid"] = rid;
+}
+
 #pragma mark - Console Logging
 
 + (void)setConsoleLogging:(BOOL)logging {

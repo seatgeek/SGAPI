@@ -37,6 +37,22 @@ in your AppDelegate's `application:didFinishLaunchingWithOptions:`
 + (void)setClientId:(NSString *)clientId;
 
 /**
+An optional `aid` value to append to all queries. Set this value in your
+AppDelegate's `application:didFinishLaunchingWithOptions:`
+
+    SGQuery.aid = @"my_aid";
+*/
++ (void)setAid:(NSString *)aid;
+
+/**
+An optional `rid` value to append to all queries. Set this value in your
+AppDelegate's `application:didFinishLaunchingWithOptions:`
+
+     SGQuery.rid = @"my_rid";
+*/
++ (void)setRid:(NSString *)rid;
+
+/**
 * Output debug information to console. Default is NO.
 */
 + (void)setConsoleLogging:(BOOL)logging;
