@@ -15,7 +15,9 @@
 #define SGPlatformLog(...)
 #endif
 
+#ifndef __weakSelf
 #define __weakSelf __weak typeof(self)
+#endif
 
 /**
 * `SGQuery` builds URLs for querying the SeatGeek Platform. See the
