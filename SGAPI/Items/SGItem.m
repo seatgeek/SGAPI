@@ -28,7 +28,9 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     NSDictionary *dataKeys = self.class.resultFields;
 
     for (NSString *key in self.class.resultFields.allKeys) {
-        [self setValue:dict[dataKeys[key]] forKey:key];
+        if (_dict[dataKeys[key]]) {
+            [self setValue:_dict[dataKeys[key]] forKey:key];
+        }
     }
 
     // ID should be a string but sometimes it comes back from the JSON parser as a number
