@@ -6,15 +6,6 @@
 
 #define SGAPI_ENDPOINT @"http://api.seatgeek.com/2"
 
-#ifdef DEBUG
-#define SGPlatformLog(s, ...) \
-    if (SGQuery.consoleLogging) { \
-        NSLog(@"%@", [NSString stringWithFormat:(s), ##__VA_ARGS__]); \
-    }
-#else
-#define SGPlatformLog(...)
-#endif
-
 #ifndef __weakSelf
 #define __weakSelf __weak typeof(self)
 #endif

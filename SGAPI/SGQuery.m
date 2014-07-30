@@ -174,7 +174,6 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Getters
 
 - (NSURL *)URL {
-    SGPlatformLog(@"%@", self.bits.URL);
     return self.bits.URL;
 }
 

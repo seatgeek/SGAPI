@@ -55,7 +55,9 @@
     SGHTTPRequest *req = [SGHTTPRequest requestWithURL:self.query.URL];
     req.showActivityIndicator = self.allowStatusBarSpinner;
 
-    SGPlatformLog(@"%@", self.query.URL);
+    if (SGQuery.consoleLogging) {
+        req.logging = req.logging | (SGHTTPLogRequests | SGHTTPLogErrors);
+    }
 
     __weakSelf me = self;
     req.onSuccess = ^(SGHTTPRequest *_req) {
@@ -63,8 +65,6 @@
     };
     req.onFailure = ^(SGHTTPRequest *_req) {
         me.fetching = NO;
-        SGPlatformLog(@"SGItemSet request failed with URL: %@ Error: %@",
-                    me.query.URL, _req.error);
         if (self.onPageLoadFailed) {
             self.onPageLoadFailed(_req.error);
         }
