@@ -65,8 +65,8 @@
     };
     req.onFailure = ^(SGHTTPRequest *_req) {
         me.fetching = NO;
-        if (self.onPageLoadFailed) {
-            self.onPageLoadFailed(_req.error);
+        if (me.onPageLoadFailed) {
+            me.onPageLoadFailed(_req.error);
         }
     };
     req.onNetworkReachable = ^{
@@ -85,11 +85,11 @@
     __weakSelf me = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSArray *results = dict[self.resultArrayKey];
+        NSArray *results = dict[me.resultArrayKey];
 
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
         for (NSDictionary *itemDict in results) {
-            [newItems addObject:[self itemForDict:itemDict]];
+            [newItems addObject:[me itemForDict:itemDict]];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -104,8 +104,8 @@
                 reallyNewItems = newItems;
             }
             me.fetching = NO;
-            if (self.onPageLoaded) {
-                self.onPageLoaded(reallyNewItems);
+            if (me.onPageLoaded) {
+                me.onPageLoaded(reallyNewItems);
             }
         });
     });
