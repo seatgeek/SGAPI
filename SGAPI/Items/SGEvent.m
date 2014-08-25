@@ -5,6 +5,7 @@
 #import "SGEvent.h"
 #import "SGVenue.h"
 #import "SGPerformer.h"
+#import "SGItem_ProtectedMethods.h"
 
 @implementation SGEvent
 
@@ -25,6 +26,11 @@
 #pragma mark - Setters
 
 - (void)setDict:(NSDictionary *)dict {
+    if (self.dict) {
+        // No need to do a full initial setup
+        [self setDictQuickly:dict];
+        return;
+    }
     super.dict = dict;
 
     @synchronized (self.class.localDateParser) {

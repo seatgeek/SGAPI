@@ -39,6 +39,10 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     }
 }
 
+- (void)setDictQuickly:(NSDictionary *)dict {
+    _dict = dict;
+}
+
 #pragma mark - Shared Date Parsers
 
 + (NSDateFormatter *)localDateParser {
