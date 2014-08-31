@@ -35,6 +35,8 @@
 */
 @property (nonatomic, strong) SGPerformer *primaryPerformer;
 
+- (void)setupRelationships;
+
 #pragma mark - Fields
 
 /** @name Event properties */

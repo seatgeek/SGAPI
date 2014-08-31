@@ -53,6 +53,9 @@
 
 + (NSDateFormatter *)localDateParser;
 + (NSDateFormatter *)utcDateParser;
+
+// ignore plz
++ (NSDictionary *)resultFields;
 + (id)itemForDict:(NSDictionary *)dict;
 
 @end

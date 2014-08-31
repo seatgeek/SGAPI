@@ -5,7 +5,6 @@
 #import "SGEvent.h"
 #import "SGVenue.h"
 #import "SGPerformer.h"
-#import "SGItem_ProtectedMethods.h"
 
 @implementation SGEvent
 
@@ -23,14 +22,23 @@
     };
 }
 
+- (void)setupRelationships {
+    self.venue = [SGVenue itemForDict:self.dict[@"venue"]];
+
+    NSMutableArray *performers = @[].mutableCopy;
+    for (NSDictionary *performerDict in self.dict[@"performers"]) {
+        SGPerformer *performer = [SGPerformer itemForDict:performerDict];
+        [performers addObject:performer];
+        if (performerDict[@"primary"]) {
+            self.primaryPerformer = performer;
+        }
+    }
+    self.performers = performers;
+}
+
 #pragma mark - Setters
 
 - (void)setDict:(NSDictionary *)dict {
-    if (self.dict) {
-        // No need to do a full initial setup
-        [self setDictQuickly:dict];
-        return;
-    }
     super.dict = dict;
 
     @synchronized (self.class.localDateParser) {
@@ -45,17 +53,7 @@
     _timeTbd = [dict[@"time_tbd"] boolValue];
     _dateTbd = [dict[@"date_tbd"] boolValue];
 
-    self.venue = [SGVenue itemForDict:dict[@"venue"]];
-
-    NSMutableArray *performers = @[].mutableCopy;
-    for (NSDictionary *performerDict in dict[@"performers"]) {
-        SGPerformer *performer = [SGPerformer itemForDict:performerDict];
-        [performers addObject:performer];
-        if (performerDict[@"primary"]) {
-            self.primaryPerformer = performer;
-        }
-    }
-    self.performers = performers;
+    [self setupRelationships];
 }
 
 @end
