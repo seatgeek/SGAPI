@@ -24,8 +24,11 @@
     return self;
 }
 
-// abstract. implemented in subclass
+// abstract. implemented in subclasses
 - (id)itemForDict:(NSDictionary *)dict {
+#ifdef DEBUG
+    NSAssert(NO, @"Called the abstract itemForDict: on SGItemSet. Don't do that.");
+#endif
     return nil;
 }
 
@@ -89,7 +92,10 @@
 
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
         for (NSDictionary *itemDict in results) {
-            [newItems addObject:[me itemForDict:itemDict]];
+            id item = [me itemForDict:itemDict];
+            if (item) { // this should never be nil. but it has been in some crash logs. why?
+                [newItems addObject:item];
+            }
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
