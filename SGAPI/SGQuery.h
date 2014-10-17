@@ -4,7 +4,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#define SGAPI_ENDPOINT @"http://api.seatgeek.com/2"
+#define SGAPI_BASEURL @"http://api.seatgeek.com/2"
 
 #ifndef __weakSelf
 #define __weakSelf __weak typeof(self)
@@ -189,5 +189,6 @@ Add a results filter. Filters are stacked, and the same filters can be applied m
 // ignore plz
 + (SGQuery *)queryWithString:(NSString *)string;
 + (NSMutableDictionary *)globalParameters;
++ (void)setBaseURL:(NSString *)url;
 
 @end

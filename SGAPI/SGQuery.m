@@ -5,6 +5,7 @@
 #import "SGQuery.h"
 #import "NSString+URLEncode.h"
 
+NSString *_gBaseURL;
 BOOL _gConsoleLogging;
 NSMutableDictionary *_globalParams;
 
@@ -16,6 +17,10 @@ NSMutableDictionary *_globalParams;
 
 @implementation SGQuery
 
++ (void)initialize {
+    self.baseURL = SGAPI_BASEURL;
+}
+
 + (SGQuery *)queryWithString:(NSString *)string {
     SGQuery *query = self.new;
     query.bits = [NSURLComponents componentsWithString:string];
@@ -26,27 +31,26 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Events Query Factories
 
 + (SGQuery *)eventsQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/events", SGAPI_ENDPOINT]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/events", _gBaseURL]];
 }
 
 + (SGQuery *)recommendationsQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/recommendations",
-                                                            SGAPI_ENDPOINT]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/recommendations", _gBaseURL]];
 }
 
 + (SGQuery *)eventQueryForId:(NSNumber *)eventId {
-    id url = [NSString stringWithFormat:@"%@/events/%@", SGAPI_ENDPOINT, eventId];
+    id url = [NSString stringWithFormat:@"%@/events/%@", _gBaseURL, eventId];
     return [self queryWithString:url];
 }
 
 #pragma mark - Performers Query Factories
 
 + (SGQuery *)performersQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/performers", SGAPI_ENDPOINT]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/performers", _gBaseURL]];
 }
 
 + (SGQuery *)performerQueryForId:(NSNumber *)performerId {
-    id url = [NSString stringWithFormat:@"%@/performers/%@", SGAPI_ENDPOINT, performerId];
+    id url = [NSString stringWithFormat:@"%@/performers/%@", _gBaseURL, performerId];
     return [self queryWithString:url];
 }
 
@@ -59,11 +63,11 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Venues Query Factories
 
 + (SGQuery *)venuesQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/venues", SGAPI_ENDPOINT]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/venues", _gBaseURL]];
 }
 
 + (SGQuery *)venueQueryForId:(NSNumber *)venueId {
-    id url = [NSString stringWithFormat:@"%@/venues/%@", SGAPI_ENDPOINT, venueId];
+    id url = [NSString stringWithFormat:@"%@/venues/%@", _gBaseURL, venueId];
     return [self queryWithString:url];
 }
 
@@ -159,6 +163,10 @@ NSMutableDictionary *_globalParams;
 
 + (void)setRid:(NSString *)rid {
     self.globalParameters[@"rid"] = rid;
+}
+
++ (void)setBaseURL:(NSString *)url {
+    _gBaseURL = url;
 }
 
 #pragma mark - Console Logging
