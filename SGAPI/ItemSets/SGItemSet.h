@@ -2,6 +2,8 @@
 //  Created by matt on 18/01/14.
 //
 
+#import <Foundation/Foundation.h>
+
 @class SGQuery;
 
 /**
