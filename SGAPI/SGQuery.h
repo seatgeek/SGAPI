@@ -3,6 +3,7 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
+#import <SGHTTPRequest/SGHTTPRequest.h>
 
 #define SGAPI_BASEURL @"http://api.seatgeek.com/2"
 
@@ -122,6 +123,8 @@ Returns an `NSURL` for the constructed API query.
     // http://api.seatgeek.com/2/events?q=imagine+dragons
 */
 - (NSURL *)URL;
+
+- (SGHTTPRequest *)requestWithMethod:(SGHTTPRequestMethod)method;
 
 #pragma mark - Pagination
 

@@ -55,12 +55,8 @@
 
     self.query.page = page;
 
-    SGHTTPRequest *req = [SGHTTPRequest requestWithURL:self.query.URL];
+    SGHTTPRequest *req = [self.query requestWithMethod:SGHTTPRequestMethodGet];
     req.showActivityIndicator = self.allowStatusBarSpinner;
-
-    if (self.query.requestHeaders) {
-        req.requestHeaders = self.query.requestHeaders.copy;
-    }
 
     if (SGQuery.consoleLogging) {
         req.logging = req.logging | (SGHTTPLogRequests | SGHTTPLogErrors);

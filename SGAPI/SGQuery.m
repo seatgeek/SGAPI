@@ -185,6 +185,26 @@ NSMutableDictionary *_globalParams;
     return self.bits.URL;
 }
 
+- (SGHTTPRequest *)requestWithMethod:(SGHTTPRequestMethod)method {
+    SGHTTPRequest *request;
+    switch (method) {
+        case SGHTTPRequestMethodGet:
+            request = [SGHTTPRequest requestWithURL:self.URL];
+            break;
+        case SGHTTPRequestMethodPost:
+            request = [SGHTTPRequest postRequestWithURL:self.URL];
+            break;
+        case SGHTTPRequestMethodDelete:
+            request = [SGHTTPRequest deleteRequestWithURL:self.URL];
+            break;
+        case SGHTTPRequestMethodPut:
+            request = [SGHTTPRequest putRequestWithURL:self.URL];
+            break;
+    }
+    request.requestHeaders = self.requestHeaders.copy;
+    return request;
+}
+
 - (NSMutableDictionary *)parameters {
     if (!_parameters) {
         _parameters = @{}.mutableCopy;
