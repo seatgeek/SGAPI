@@ -186,6 +186,8 @@ Add a results filter. Filters are stacked, and the same filters can be applied m
 */
 - (void)addFilter:(NSString *)filter value:(id)value;
 
+@property (nonatomic, strong) NSDictionary *requestHeaders;
+
 // ignore plz
 + (SGQuery *)queryWithString:(NSString *)string;
 + (NSMutableDictionary *)globalParameters;

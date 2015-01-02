@@ -58,6 +58,10 @@
     SGHTTPRequest *req = [SGHTTPRequest requestWithURL:self.query.URL];
     req.showActivityIndicator = self.allowStatusBarSpinner;
 
+    if (self.query.requestHeaders) {
+        req.requestHeaders = self.query.requestHeaders.copy;
+    }
+
     if (SGQuery.consoleLogging) {
         req.logging = req.logging | (SGHTTPLogRequests | SGHTTPLogErrors);
     }
