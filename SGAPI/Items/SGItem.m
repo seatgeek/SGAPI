@@ -95,11 +95,11 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
         return nil;
     }
 
-    if ([requiredType isKindOfClass:NSString.class]) { // wanted a string
+    if (requiredType == NSString.class) { // wanted a string
         if ([value isKindOfClass:NSNumber.class]) { // got a number
             return [value stringValue];
         }
-    } else if ([requiredType isKindOfClass:NSNumber.class]) { // wanted a number
+    } else if (requiredType == NSNumber.class) { // wanted a number
         if ([value isKindOfClass:NSString.class]) { // got a string
             return @([value floatValue]);
         }
