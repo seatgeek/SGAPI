@@ -2,6 +2,7 @@
 //  Created by matt on 7/01/13.
 //
 
+#import <objc/runtime.h>
 #import "SGItem.h"
 #import "NSDictionary+NullCleanse.h"
 
@@ -25,17 +26,19 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 - (void)setDict:(NSDictionary *)dict {
     _dict = dict.nullCleansed;
 
-    NSDictionary *dataKeys = self.class.resultFields;
+    NSDictionary *keys = self.class.resultFields;
 
     for (NSString *key in self.class.resultFields.allKeys) {
-        if (_dict[dataKeys[key]]) {
-            [self setValue:_dict[dataKeys[key]] forKey:key];
-        }
-    }
+        if (_dict[keys[key]]) {
 
-    // ID should be a string but sometimes it comes back from the JSON parser as a number
-    if (![self.ID isKindOfClass:NSString.class]) {
-        _ID = [(id)self.ID stringValue];
+            // get the property's class, for type enforcement
+            objc_property_t prop = class_getProperty(self.class, key.UTF8String);
+            NSString *attribs = [NSString stringWithUTF8String:property_getAttributes(prop)];
+            NSArray *bits = [attribs componentsSeparatedByString:@"\""];
+            Class requiredType = NSClassFromString(bits[1]);
+
+            [self setValue:[self valueFor:_dict[keys[key]] withType:requiredType] forKey:key];
+        }
     }
 }
 
@@ -76,6 +79,33 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 - (NSUInteger)hash {
     return self.ID.hash;
+}
+
+#pragma mark - Type Conversion
+
+- (id)valueFor:(id)value withType:(Class)requiredType {
+
+    // nil or correct type, so send it back
+    if (!value || [value isKindOfClass:requiredType]) {
+        return value;
+    }
+
+    // NSNull? who ever thought that was a good idea? kill it with fire
+    if ([value isKindOfClass:NSNull.class]) {
+        return nil;
+    }
+
+    if ([requiredType isKindOfClass:NSString.class]) { // wanted a string
+        if ([value isKindOfClass:NSNumber.class]) { // got a number
+            return [value stringValue];
+        }
+    } else if ([requiredType isKindOfClass:NSNumber.class]) { // wanted a number
+        if ([value isKindOfClass:NSString.class]) { // got a string
+            return @([value floatValue]);
+        }
+    }
+
+    return nil; // can't help you. nil's all you're gonna get
 }
 
 #pragma mark - Getters

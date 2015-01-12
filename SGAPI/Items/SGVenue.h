@@ -55,7 +55,7 @@
 /**
 * The venues postal code.
 */
-@property (nonatomic, readonly, strong) NSNumber *postalCode;
+@property (nonatomic, readonly, strong) NSString *postalCode;
 
 /**
 * A string of the format "<city>, <state>, <postalCode>" for US/Canada
