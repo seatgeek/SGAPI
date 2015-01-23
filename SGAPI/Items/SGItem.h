@@ -57,5 +57,6 @@
 // ignore plz
 + (NSDictionary *)resultFields;
 + (id)itemForDict:(NSDictionary *)dict;
++ (id)valueFor:(id)value withType:(Class)requiredType;
 
 @end

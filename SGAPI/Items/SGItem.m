@@ -37,7 +37,8 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
             NSArray *bits = [attribs componentsSeparatedByString:@"\""];
             Class requiredType = NSClassFromString(bits[1]);
 
-            [self setValue:[self valueFor:_dict[keys[key]] withType:requiredType] forKey:key];
+            [self setValue:[self.class valueFor:_dict[keys[key]] withType:requiredType]
+                  forKey:key];
         }
     }
 }
@@ -83,7 +84,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 #pragma mark - Type Conversion
 
-- (id)valueFor:(id)value withType:(Class)requiredType {
++ (id)valueFor:(id)value withType:(Class)requiredType {
 
     // nil or correct type, so send it back
     if (!value || [value isKindOfClass:requiredType]) {
