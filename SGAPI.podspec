@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/seatgeek/SGAPI.git", :tag => "1.1.0" }  
   s.source_files = "SGAPI/**/*.{h,m}"
   s.requires_arc = true
-  s.dependency "SGHTTPRequest", '~> 1.1.0'
+  s.dependency "SGHTTPRequest", '>= 1.1.0'
 end
