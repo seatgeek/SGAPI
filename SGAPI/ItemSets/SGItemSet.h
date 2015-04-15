@@ -23,7 +23,7 @@ An <SGQuery> instance for defining the parameters and filters of the API query.
     events.query.search = @"new york mets";
     events.query.perPage = 30;
 */
-@property (nonatomic, strong) SGQuery *query;
+@property (nullable, nonatomic, strong) SGQuery *query;
 
 /** @name State change callbacks */
 
@@ -37,17 +37,17 @@ request has completed.
         }
     };
 */
-@property (nonatomic, copy) void (^onPageLoaded)(NSOrderedSet *newItems);
+@property (nullable, nonatomic, copy) void (^onPageLoaded)(NSOrderedSet* __nonnull newItems);
 
 /**
-A block assigned to `onPageLoadFailed` will be called after a page request
-failed to load.
+ A block assigned to `onPageLoadFailed` will be called after a page request
+ failed to load.
 
-    events.onPageLoadFailed = ^(NSError *error) {
-        NSLog(@"error: %@", error);
-    };
-*/
-@property (nonatomic, copy) void (^onPageLoadFailed)(NSError *error);
+ events.onPageLoadFailed = ^(NSError *error) {
+ NSLog(@"error: %@", error);
+ };
+ */
+@property (nullable, nonatomic, copy) void (^onPageLoadFailed)(NSError* __nonnull error);
 
 /** @name Fetching results */
 
@@ -100,22 +100,22 @@ failed to load.
 /**
 * Returns an `NSArray` of the items in the set.
 */
-- (NSArray *)array;
+- (nullable NSArray *)array;
 
 /**
 * Returns an `NSOrderedSet` of the items in the set.
 */
-- (NSOrderedSet *)orderdSet;
+- (nullable NSOrderedSet *)orderdSet;
 
 /**
 * Returns the first item in the set.
 */
-- (id)firstObject;
+- (nullable id)firstObject;
 
 /**
 * Returns the last item in the set.
 */
-- (id)lastObject;
+- (nullable id)lastObject;
 
 /**
 * Returns a count of the items in the set so far. Note that this is not the
@@ -141,8 +141,8 @@ failed to load.
 @property (nonatomic, assign) BOOL allowStatusBarSpinner;
 
 // ignore plz
-@property (nonatomic, copy) NSString *resultArrayKey;
+@property (nonnull, nonatomic, copy) NSString *resultArrayKey;
 
-- (id)objectAtIndexedSubscript:(NSUInteger)index;
+- (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
 
 @end
