@@ -4,6 +4,7 @@
 
 #import "SGQuery.h"
 #import "NSString+URLEncode.h"
+#import "NSDate+ISO8601.h"
 
 NSString *_gBaseURL;
 BOOL _gConsoleLogging;
@@ -75,8 +76,11 @@ NSMutableDictionary *_globalParams;
 
 - (void)setParameter:(NSString *)param value:(id)value {
     // todo: parse the value into a suitable string
-
-    self.parameters[param] = value;
+    if (value) {
+        self.parameters[param] = value;
+    } else {
+        [self.parameters removeObjectForKey:param];
+    }
     [self rebuildQuery];
 }
 
@@ -139,8 +143,18 @@ NSMutableDictionary *_globalParams;
 
 - (void)setRange:(NSString *)range {
     // todo: validate
-    _range = range;
+    _range = range.copy;
     [self setParameter:@"range" value:range];
+}
+
+- (void)setFromDate:(NSDate *)fromDate {
+    _fromDate = fromDate.copy;
+    [self setParameter:@"datetime_local.gte" value:fromDate.ISO8601];
+}
+
+- (void)setToDate:(NSDate *)toDate {
+    _toDate = toDate.copy;
+    [self setParameter:@"datetime_local.lte" value:toDate.ISO8601];
 }
 
 - (void)setSearch:(NSString *)search {

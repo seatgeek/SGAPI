@@ -167,6 +167,18 @@ Apply a keyword search to the query.
 */
 @property (nonatomic, copy) NSString *range;
 
+#pragma mark - Date Range Parameters (for 'events')
+
+/**
+ * Specify a from date (inclusive) for results
+ */
+@property (nonatomic, copy) NSDate *fromDate;
+
+/**
+ * Specify a to date (inclusive) for results
+ */
+@property (nonatomic, copy) NSDate *toDate;
+
 #pragma mark - Freeform Parameters and Filters
 
 /** @name Other parameters and filters */
