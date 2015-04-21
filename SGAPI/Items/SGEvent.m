@@ -42,16 +42,16 @@
     super.dict = dict;
 
     @synchronized (self.class.localDateParser) {
-        _localDate = [self.class.localDateParser dateFromString:dict[@"datetime_local"]];
-        _utcDate = [self.class.utcDateParser dateFromString:dict[@"datetime_utc"]];
-        _announceDate = [self.class.utcDateParser dateFromString:dict[@"announce_date"]];
-        _visibleUntil = [self.class.utcDateParser dateFromString:dict[@"visible_until_utc"]];
-        _createdAt = [self.class.utcDateParser dateFromString:dict[@"created_at"]];
+        _localDate = [self.class.localDateParser dateFromString:self.dict[@"datetime_local"]];
+        _utcDate = [self.class.utcDateParser dateFromString:self.dict[@"datetime_utc"]];
+        _announceDate = [self.class.utcDateParser dateFromString:self.dict[@"announce_date"]];
+        _visibleUntil = [self.class.utcDateParser dateFromString:self.dict[@"visible_until_utc"]];
+        _createdAt = [self.class.utcDateParser dateFromString:self.dict[@"created_at"]];
     }
 
-    _generalAdmission = [dict[@"general_admission"] boolValue];
-    _timeTbd = [dict[@"time_tbd"] boolValue];
-    _dateTbd = [dict[@"date_tbd"] boolValue];
+    _generalAdmission = [self.dict[@"general_admission"] boolValue];
+    _timeTbd = [self.dict[@"time_tbd"] boolValue];
+    _dateTbd = [self.dict[@"date_tbd"] boolValue];
 
     [self setupRelationships];
 }

@@ -31,10 +31,10 @@
 - (void)setDict:(NSDictionary *)dict {
     super.dict = dict;
 
-    if ([dict[@"location"][@"lat"] isKindOfClass:NSNumber
-          .class] && [dict[@"location"][@"lon"] isKindOfClass:NSNumber.class]) {
-        _location.latitude = [dict[@"location"][@"lat"] doubleValue];
-        _location.longitude = [dict[@"location"][@"lon"] doubleValue];
+    if ([self.dict[@"location"][@"lat"] isKindOfClass:NSNumber.class]
+          && [self.dict[@"location"][@"lon"] isKindOfClass:NSNumber.class]) {
+        _location.latitude = [self.dict[@"location"][@"lat"] doubleValue];
+        _location.longitude = [self.dict[@"location"][@"lon"] doubleValue];
     } else {
         _location = CLLocationCoordinate2DMake(0, 0);
     }

@@ -28,7 +28,7 @@
 - (void)setDict:(NSDictionary *)dict {
     super.dict = dict;
 
-    _hasUpcomingEvents = [dict[@"has_upcoming_events"] boolValue];
+    _hasUpcomingEvents = [self.dict[@"has_upcoming_events"] boolValue];
 }
 
 #pragma mark - Getters
