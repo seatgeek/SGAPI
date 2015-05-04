@@ -160,8 +160,12 @@
     return self.items.array;
 }
 
-- (NSOrderedSet *)orderdSet {
+- (NSOrderedSet *)orderedSet {
     return self.items;
+}
+
+- (NSOrderedSet *)orderdSet {
+    return self.orderedSet;
 }
 
 - (id)firstObject {
