@@ -214,6 +214,9 @@ NSMutableDictionary *_globalParams;
         case SGHTTPRequestMethodPut:
             request = [SGHTTPRequest putRequestWithURL:self.URL];
             break;
+        case SGHTTPRequestMethodPatch:
+            request = [SGHTTPRequest patchRequestWithURL:self.URL];
+            break;
     }
     request.requestHeaders = self.requestHeaders.copy;
     return request;
