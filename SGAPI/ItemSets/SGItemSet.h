@@ -23,7 +23,7 @@ An <SGQuery> instance for defining the parameters and filters of the API query.
     events.query.search = @"new york mets";
     events.query.perPage = 30;
 */
-@property (nullable, nonatomic, strong) SGQuery *query;
+@property (nonatomic, strong) SGQuery *query;
 
 /** @name State change callbacks */
 
@@ -37,7 +37,7 @@ request has completed.
         }
     };
 */
-@property (nullable, nonatomic, copy) void (^onPageLoaded)(NSOrderedSet* __nonnull newItems);
+@property (nonatomic, copy) void (^onPageLoaded)(NSOrderedSet* newItems);
 
 /**
  A block assigned to `onPageLoadFailed` will be called after a page request
@@ -47,7 +47,7 @@ request has completed.
  NSLog(@"error: %@", error);
  };
  */
-@property (nullable, nonatomic, copy) void (^onPageLoadFailed)(NSError* __nonnull error);
+@property (nonatomic, copy) void (^onPageLoadFailed)(NSError* error);
 
 /** @name Fetching results */
 
@@ -100,23 +100,23 @@ request has completed.
 /**
 * Returns an `NSArray` of the items in the set.
 */
-- (nullable NSArray *)array;
+- (NSArray *)array;
 
 /**
 * Returns an `NSOrderedSet` of the items in the set.
 */
-- (nullable NSOrderedSet *)orderedSet;
-- (nullable NSOrderedSet *)orderdSet __deprecated;
+- (NSOrderedSet *)orderedSet;
+- (NSOrderedSet *)orderdSet __deprecated;
 
 /**
 * Returns the first item in the set.
 */
-- (nullable id)firstObject;
+- (id)firstObject;
 
 /**
 * Returns the last item in the set.
 */
-- (nullable id)lastObject;
+- (id)lastObject;
 
 /**
 * Returns a count of the items in the set so far. Note that this is not the
@@ -142,8 +142,8 @@ request has completed.
 @property (nonatomic, assign) BOOL allowStatusBarSpinner;
 
 // ignore plz
-@property (nonnull, nonatomic, copy) NSString *resultArrayKey;
+@property (nonatomic, copy) NSString *resultArrayKey;
 
-- (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
+- (id)objectAtIndexedSubscript:(NSUInteger)index;
 
 @end
