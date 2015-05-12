@@ -124,6 +124,23 @@ request has completed.
 */
 - (NSUInteger)count;
 
+/** @name Caching results */
+
+/**
+* Caches the current results set to disk.
+*/
+- (void)cacheResultsWithCacheKey:(NSString *)cacheKey;
+
+/**
+* Returns YES if cached results are available for the given cache key.
+*/
+- (BOOL)hasCachedResultsForCacheKey:(NSString *)cacheKey;
+
+/**
+* Restores the results set to a previously cached state.
+*/
+- (void)loadCachedResultsForCacheKey:(NSString *)cacheKey;
+
 /** @name Resetting internal state */
 
 /**

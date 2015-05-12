@@ -21,6 +21,16 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     return item;
 }
 
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super init];
+    self.dict = [coder decodeObjectForKey:@"dict"];
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.dict forKey:@"dict"];
+}
+
 #pragma mark - Setters
 
 - (void)setDict:(NSDictionary *)dict {

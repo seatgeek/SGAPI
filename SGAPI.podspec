@@ -10,4 +10,5 @@ Pod::Spec.new do |s|
   s.source_files = "SGAPI/**/*.{h,m}"
   s.requires_arc = true
   s.dependency "SGHTTPRequest", '>= 1.1.0'
+  s.dependency "SGImageCache", '>= 2.1.1'  
 end

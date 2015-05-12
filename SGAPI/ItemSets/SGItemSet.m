@@ -2,6 +2,7 @@
 //  Created by matt on 18/01/14.
 //
 
+#import <SGImageCache/SGCache.h>
 #import "SGItemSet.h"
 #import "SGHTTPRequest.h"
 #import "SGQuery.h"
@@ -115,6 +116,43 @@
             }
         });
     });
+}
+
+#pragma mark - Caching
+
+- (void)cacheResultsWithCacheKey:(NSString *)cacheKey {
+    if (!cacheKey.length) {
+        return;
+    }
+
+    cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.items];
+    [SGCache addData:data forCacheKey:cacheKey];
+
+    cacheKey = [NSString stringWithFormat:@"%@:meta", cacheKey];
+    data = [NSKeyedArchiver archivedDataWithRootObject:self.meta];
+    [SGCache addData:data forCacheKey:cacheKey];
+}
+
+- (BOOL)hasCachedResultsForCacheKey:(NSString *)cacheKey {
+    cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
+    return [SGCache haveFileForCacheKey:cacheKey];
+}
+
+- (void)loadCachedResultsForCacheKey:(NSString *)cacheKey {
+    if (![self hasCachedResultsForCacheKey:cacheKey]) {
+        return;
+    }
+
+    cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
+    NSData *data = [SGCache fileForCacheKey:cacheKey];
+    NSOrderedSet *orderedSet = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    self.items = orderedSet.mutableCopy;
+
+    cacheKey = [NSString stringWithFormat:@"%@:meta", cacheKey];
+    data = [SGCache fileForCacheKey:cacheKey];
+    self.meta = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    self.lastFetchedPage = self.totalPages;
 }
 
 #pragma mark - Setters

@@ -7,7 +7,7 @@
 * are <SGEvent>, <SGPerformer>, <SGVenue>.
 */
 
-@interface SGItem : NSObject
+@interface SGItem : NSObject <NSCoding>
 
 #pragma mark - Fields
 
