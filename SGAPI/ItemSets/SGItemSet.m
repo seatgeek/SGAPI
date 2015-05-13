@@ -14,6 +14,7 @@
 @property (nonatomic, assign) BOOL fetching;
 @property (nonatomic, assign) int lastFetchedPage;
 @property (nonatomic, strong) SGHTTPRequest *request;
+@property (nonatomic, assign) BOOL itemsAreFromCache;
 
 @end
 
@@ -111,6 +112,7 @@
                 reallyNewItems = newItems;
             }
             me.fetching = NO;
+            me.itemsAreFromCache = NO;
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
@@ -120,7 +122,7 @@
 
 #pragma mark - Caching
 
-- (void)cacheResultsWithCacheKey:(NSString *)cacheKey {
+- (void)cacheItemsWithCacheKey:(NSString *)cacheKey {
     if (!cacheKey.length) {
         return;
     }
@@ -134,13 +136,13 @@
     [SGCache addData:data forCacheKey:cacheKey];
 }
 
-- (BOOL)hasCachedResultsForCacheKey:(NSString *)cacheKey {
+- (BOOL)hasCachedItemsForCacheKey:(NSString *)cacheKey {
     cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
     return [SGCache haveFileForCacheKey:cacheKey];
 }
 
-- (void)loadCachedResultsForCacheKey:(NSString *)cacheKey {
-    if (![self hasCachedResultsForCacheKey:cacheKey]) {
+- (void)loadCachedItemsForCacheKey:(NSString *)cacheKey {
+    if (![self hasCachedItemsForCacheKey:cacheKey]) {
         return;
     }
 
@@ -153,6 +155,8 @@
     data = [SGCache fileForCacheKey:cacheKey];
     self.meta = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     self.lastFetchedPage = self.totalPages;
+
+    self.itemsAreFromCache = YES;
 }
 
 #pragma mark - Setters
