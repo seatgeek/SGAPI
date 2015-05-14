@@ -89,7 +89,16 @@
 - (void)processResults:(NSData *)data {
     __weakSelf me = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSError *error = nil;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        if (error) {
+            if (me.onPageLoadFailed) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    me.onPageLoadFailed(error);
+                });
+            }
+            return;
+        }
         NSArray *results = dict[me.resultArrayKey];
 
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
