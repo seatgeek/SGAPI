@@ -178,6 +178,9 @@
 #pragma mark - Getters
 
 - (BOOL)lastPageAlreadyFetched {
+    if (self.items && self.items.count == 0) {
+        return YES;
+    }
     if (!self.meta) {
         return NO;
     }
