@@ -168,4 +168,6 @@ request has completed.
 
 - (id)objectAtIndexedSubscript:(NSUInteger)index;
 
+- (NSDictionary *)lastResponseDict;
+
 @end

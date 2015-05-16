@@ -15,6 +15,7 @@
 @property (nonatomic, assign) int lastFetchedPage;
 @property (nonatomic, strong) SGHTTPRequest *request;
 @property (nonatomic, assign) BOOL itemsAreFromCache;
+@property (nonatomic, strong) NSDictionary *lastResponseDict;
 
 @end
 
@@ -91,6 +92,8 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSError *error = nil;
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        me.lastResponseDict = dict;
+
         if (error) {
             if (me.onPageLoadFailed) {
                 dispatch_async(dispatch_get_main_queue(), ^{
