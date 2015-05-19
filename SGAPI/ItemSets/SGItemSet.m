@@ -103,6 +103,9 @@
             return;
         }
         NSArray *results = dict[me.resultArrayKey];
+        if (![results isKindOfClass:NSArray.class]) {
+            results = nil;
+        }
 
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
         for (NSDictionary *itemDict in results) {
