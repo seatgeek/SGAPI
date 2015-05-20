@@ -102,6 +102,15 @@
             }
             return;
         }
+
+        if (!dict[@"meta"]) {
+            error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                me.onPageLoadFailed(error);
+            });
+            return;
+        }
+
         NSArray *results = dict[me.resultArrayKey];
         if (![results isKindOfClass:NSArray.class]) {
             results = nil;
