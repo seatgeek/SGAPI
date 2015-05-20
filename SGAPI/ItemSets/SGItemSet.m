@@ -171,7 +171,7 @@
     self.meta = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     self.lastFetchedPage = self.totalPages;
 
-    self.itemsAreFromCache = YES;
+    self.itemsAreFromCache = (self.items.count > 0);
 }
 
 #pragma mark - Setters
