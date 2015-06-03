@@ -129,17 +129,17 @@ request has completed.
 /**
 * Caches the current results set to disk.
 */
-- (void)cacheItemsWithCacheKey:(NSString *)cacheKey;
+- (void)cacheItemsWithCacheKey:(NSString * __nonnull)cacheKey;
 
 /**
 * Returns YES if cached results are available for the given cache key.
 */
-- (BOOL)hasCachedItemsForCacheKey:(NSString *)cacheKey;
+- (BOOL)hasCachedItemsForCacheKey:(NSString * __nonnull)cacheKey;
 
 /**
 * Restores the results set to a previously cached state.
 */
-- (void)loadCachedItemsForCacheKey:(NSString *)cacheKey;
+- (void)loadCachedItemsForCacheKey:(NSString * __nonnull)cacheKey;
 
 /**
 * Returns YES if the current items were loaded from cache.
@@ -168,6 +168,6 @@ request has completed.
 
 - (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
 
-- (NSDictionary *)lastResponseDict;
+- (nullable NSDictionary *)lastResponseDict;
 
 @end
