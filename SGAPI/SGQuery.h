@@ -5,7 +5,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <SGHTTPRequest/SGHTTPRequest.h>
 
-#define SGAPI_BASEURL @"http://api.seatgeek.com/2"
+#define SGAPI_BASEURL @"https://api.seatgeek.com/2"
 
 #ifndef __weakSelf
 #define __weakSelf __weak typeof(self)
@@ -120,7 +120,7 @@ Returns an `NSURL` for the constructed API query.
     query.search = @"imagine dragons";
 
     NSLog(@"%@", query.URL);
-    // http://api.seatgeek.com/2/events?q=imagine+dragons
+    // https://api.seatgeek.com/2/events?q=imagine+dragons
 */
 - (NSURL *)URL;
 
