@@ -32,26 +32,26 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Events Query Factories
 
 + (SGQuery *)eventsQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/events", _gBaseURL]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/events", SGQuery.baseURL]];
 }
 
 + (SGQuery *)recommendationsQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/recommendations", _gBaseURL]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/recommendations", SGQuery.baseURL]];
 }
 
 + (SGQuery *)eventQueryForId:(NSNumber *)eventId {
-    id url = [NSString stringWithFormat:@"%@/events/%@", _gBaseURL, eventId];
+    id url = [NSString stringWithFormat:@"%@/events/%@", SGQuery.baseURL, eventId];
     return [self queryWithString:url];
 }
 
 #pragma mark - Performers Query Factories
 
 + (SGQuery *)performersQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/performers", _gBaseURL]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/performers", SGQuery.baseURL]];
 }
 
 + (SGQuery *)performerQueryForId:(NSNumber *)performerId {
-    id url = [NSString stringWithFormat:@"%@/performers/%@", _gBaseURL, performerId];
+    id url = [NSString stringWithFormat:@"%@/performers/%@", SGQuery.baseURL, performerId];
     return [self queryWithString:url];
 }
 
@@ -64,11 +64,11 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Venues Query Factories
 
 + (SGQuery *)venuesQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/venues", _gBaseURL]];
+    return [self queryWithString:[NSString stringWithFormat:@"%@/venues", SGQuery.baseURL]];
 }
 
 + (SGQuery *)venueQueryForId:(NSNumber *)venueId {
-    id url = [NSString stringWithFormat:@"%@/venues/%@", _gBaseURL, venueId];
+    id url = [NSString stringWithFormat:@"%@/venues/%@", SGQuery.baseURL, venueId];
     return [self queryWithString:url];
 }
 
@@ -194,6 +194,10 @@ NSMutableDictionary *_globalParams;
 }
 
 #pragma mark - Getters
+
++ (NSString *)baseURL {
+    return _gBaseURL;
+}
 
 - (NSURL *)URL {
     return self.bits.URL;
