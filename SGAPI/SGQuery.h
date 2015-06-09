@@ -207,5 +207,6 @@ Add a results filter. Filters are stacked, and the same filters can be applied m
 + (SGQuery *)queryWithString:(NSString *)string;
 + (NSMutableDictionary *)globalParameters;
 + (void)setBaseURL:(NSString *)url;
++ (NSString *)baseURL;
 
 @end
