@@ -126,6 +126,10 @@
 
         dispatch_async(dispatch_get_main_queue(), ^{
             me.meta = dict[@"meta"];
+            if (me.itemsAreFromCache) {
+                me.itemsAreFromCache = NO;
+                [me.items removeAllObjects];    // blitz over it with fresh data
+            }
             NSMutableOrderedSet *reallyNewItems;
             if (me.items) {
                 reallyNewItems = newItems.mutableCopy;
@@ -136,7 +140,6 @@
                 reallyNewItems = newItems;
             }
             me.fetching = NO;
-            me.itemsAreFromCache = NO;
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
@@ -154,10 +157,6 @@
     cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.items];
     [SGCache addData:data forCacheKey:cacheKey];
-
-    cacheKey = [NSString stringWithFormat:@"%@:meta", cacheKey];
-    data = [NSKeyedArchiver archivedDataWithRootObject:self.meta];
-    [SGCache addData:data forCacheKey:cacheKey];
 }
 
 - (BOOL)hasCachedItemsForCacheKey:(NSString *)cacheKey {
@@ -174,12 +173,6 @@
     NSData *data = [SGCache fileForCacheKey:cacheKey];
     NSOrderedSet *orderedSet = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     self.items = orderedSet.mutableCopy;
-
-    cacheKey = [NSString stringWithFormat:@"%@:meta", cacheKey];
-    data = [SGCache fileForCacheKey:cacheKey];
-    self.meta = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    self.lastFetchedPage = self.totalPages;
-
     self.itemsAreFromCache = (self.items.count > 0);
 }
 
