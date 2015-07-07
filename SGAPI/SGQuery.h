@@ -204,9 +204,9 @@ Add a results filter. Filters are stacked, and the same filters can be applied m
 @property (nonatomic, strong) NSDictionary *requestHeaders;
 
 // ignore plz
-+ (SGQuery *)queryWithString:(NSString *)string;
++ (SGQuery *)queryWithPath:(NSString *)path;
++ (SGQuery *)queryWithSchemeHostPath:(NSString *)schemeHostPath;  // truncates query params!
 + (NSMutableDictionary *)globalParameters;
 + (void)setBaseURL:(NSString *)url;
-+ (NSString *)baseURL;
 
 @end
