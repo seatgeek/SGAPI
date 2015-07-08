@@ -11,7 +11,7 @@ BOOL _gConsoleLogging;
 NSMutableDictionary *_globalParams;
 
 @interface SGQuery ()
-@property (nonatomic, strong) NSString *schemeHostPath;
+@property (nonatomic, strong) NSString *baseUrl;
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, strong) NSString *query;
 @property (nonatomic, strong) NSMutableDictionary *parameters;
@@ -25,19 +25,16 @@ NSMutableDictionary *_globalParams;
 }
 
 + (SGQuery *)queryWithPath:(NSString *)path {
-    return [SGQuery queryWithPath:path orSchemeHostPath:nil];
+    return [SGQuery queryWithBaseUrl:nil path:path];
 }
 
-+ (SGQuery *)queryWithSchemeHostPath:(NSString *)schemeHostPath {
-    return [SGQuery queryWithPath:nil  orSchemeHostPath:schemeHostPath];
++ (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl {
+    return [SGQuery queryWithBaseUrl:baseUrl path:nil];
 }
 
-+ (SGQuery *)queryWithPath:(NSString *)path orSchemeHostPath:(NSString *)schemeHostPath  {
-    if (path && schemeHostPath) {
-        return nil;
-    }
++ (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl path:(NSString *)path {
     SGQuery *query = self.new;
-    query.schemeHostPath = schemeHostPath;
+    query.baseUrl = baseUrl;
     query.path = path;
     [query rebuildQuery];
     return query;
@@ -210,11 +207,10 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Getters
 
 - (NSURL *)URL {
-    NSString *schemeHostPath = self.schemeHostPath;
-    if (self.path) {
-        schemeHostPath = [NSString stringWithFormat:@"%@%@", _gBaseURL, self.path];
-    }
-    NSURLComponents *bits = [NSURLComponents componentsWithString:schemeHostPath];
+    NSString *baseUrl = self.baseUrl ?: _gBaseURL;
+    NSString *path = self.path ?: @"";
+    NSString *url = [baseUrl stringByAppendingString:path];
+    NSURLComponents *bits = [NSURLComponents componentsWithString:url];
     bits.query = self.query;
     return bits.URL;
 }
