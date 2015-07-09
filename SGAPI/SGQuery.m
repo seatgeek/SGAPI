@@ -11,7 +11,9 @@ BOOL _gConsoleLogging;
 NSMutableDictionary *_globalParams;
 
 @interface SGQuery ()
-@property (nonatomic, strong) NSURLComponents *bits;
+@property (nonatomic, strong) NSString *baseUrl;
+@property (nonatomic, strong) NSString *path;
+@property (nonatomic, strong) NSString *query;
 @property (nonatomic, strong) NSMutableDictionary *parameters;
 @property (nonatomic, copy) NSString *filters;
 @end
@@ -22,9 +24,18 @@ NSMutableDictionary *_globalParams;
     self.baseURL = SGAPI_BASEURL;
 }
 
-+ (SGQuery *)queryWithString:(NSString *)string {
++ (SGQuery *)queryWithPath:(NSString *)path {
+    return [SGQuery queryWithBaseUrl:nil path:path];
+}
+
++ (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl {
+    return [SGQuery queryWithBaseUrl:baseUrl path:nil];
+}
+
++ (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl path:(NSString *)path {
     SGQuery *query = self.new;
-    query.bits = [NSURLComponents componentsWithString:string];
+    query.baseUrl = baseUrl;
+    query.path = path;
     [query rebuildQuery];
     return query;
 }
@@ -32,27 +43,27 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Events Query Factories
 
 + (SGQuery *)eventsQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/events", SGQuery.baseURL]];
+    return [self queryWithPath:@"/events"];
 }
 
 + (SGQuery *)recommendationsQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/recommendations", SGQuery.baseURL]];
+    return [self queryWithPath:@"/recommendations"];
 }
 
 + (SGQuery *)eventQueryForId:(NSNumber *)eventId {
-    id url = [NSString stringWithFormat:@"%@/events/%@", SGQuery.baseURL, eventId];
-    return [self queryWithString:url];
+    id path = [NSString stringWithFormat:@"/events/%@", eventId];
+    return [self queryWithPath:path];
 }
 
 #pragma mark - Performers Query Factories
 
 + (SGQuery *)performersQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/performers", SGQuery.baseURL]];
+    return [self queryWithPath:@"/performers"];
 }
 
 + (SGQuery *)performerQueryForId:(NSNumber *)performerId {
-    id url = [NSString stringWithFormat:@"%@/performers/%@", SGQuery.baseURL, performerId];
-    return [self queryWithString:url];
+    id path = [NSString stringWithFormat:@"/performers/%@", performerId];
+    return [self queryWithPath:path];
 }
 
 + (SGQuery *)performerQueryForSlug:(NSString *)slug {
@@ -64,12 +75,12 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Venues Query Factories
 
 + (SGQuery *)venuesQuery {
-    return [self queryWithString:[NSString stringWithFormat:@"%@/venues", SGQuery.baseURL]];
+    return [self queryWithPath:@"/venues"];
 }
 
 + (SGQuery *)venueQueryForId:(NSNumber *)venueId {
-    id url = [NSString stringWithFormat:@"%@/venues/%@", SGQuery.baseURL, venueId];
-    return [self queryWithString:url];
+    id path = [NSString stringWithFormat:@"/venues/%@", venueId];
+    return [self queryWithPath:path];
 }
 
 #pragma mark - Query Rebuilding
@@ -97,7 +108,7 @@ NSMutableDictionary *_globalParams;
 }
 
 - (void)rebuildQuery {
-    self.bits.query = nil;
+    self.query = nil;
     for (id param in self.class.globalParameters) {
         [self addParameterToQuery:param value:self.class.globalParameters[param]];
     }
@@ -105,21 +116,21 @@ NSMutableDictionary *_globalParams;
         [self addParameterToQuery:param value:self.parameters[param]];
     }
     if (self.filters.length) {
-        if (self.bits.query.length) {
+        if (self.query.length) {
             NSString *appendage = [NSString stringWithFormat:@"&%@", self.filters];
-            self.bits.query = [self.bits.query stringByAppendingString:appendage];
+            self.query = [self.query stringByAppendingString:appendage];
         } else {
-            self.bits.query = [self.bits.query stringByAppendingString:self.filters];
+            self.query = [self.query stringByAppendingString:self.filters];
         }
     }
 }
 
 - (void)addParameterToQuery:(NSString *)param value:(id)value {
-    if (self.bits.query.length) {
+    if (self.query.length) {
         NSString *appendage = [NSString stringWithFormat:@"&%@=%@", param, value];
-        self.bits.query = [self.bits.query stringByAppendingString:appendage];
+        self.query = [self.query stringByAppendingString:appendage];
     } else {
-        self.bits.query = [NSString stringWithFormat:@"%@=%@", param, value];
+        self.query = [NSString stringWithFormat:@"%@=%@", param, value];
     }
 }
 
@@ -195,12 +206,13 @@ NSMutableDictionary *_globalParams;
 
 #pragma mark - Getters
 
-+ (NSString *)baseURL {
-    return _gBaseURL;
-}
-
 - (NSURL *)URL {
-    return self.bits.URL;
+    NSString *baseUrl = self.baseUrl ?: _gBaseURL;
+    NSString *path = self.path ?: @"";
+    NSString *url = [baseUrl stringByAppendingString:path];
+    NSURLComponents *bits = [NSURLComponents componentsWithString:url];
+    bits.query = self.query;
+    return bits.URL;
 }
 
 - (SGHTTPRequest *)requestWithMethod:(SGHTTPRequestMethod)method {
