@@ -76,6 +76,9 @@
         }
     };
     req.onNetworkReachable = ^{
+        if (me.onPageLoadRetry) {
+            me.onPageLoadRetry();
+        }
         [me fetchNextPage];
     };
     [req start];
@@ -103,29 +106,29 @@
             return;
         }
 
-        if (!dict[@"meta"]) {
-            error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                me.onPageLoadFailed(error);
-            });
-            return;
-        }
-
         NSArray *results = dict[me.resultArrayKey];
         if (![results isKindOfClass:NSArray.class]) {
             results = nil;
         }
 
+        NSDictionary *metaDict = dict[@"meta"];
+        if (!metaDict) {
+            // assume this endpoint cannot be paginated.
+            metaDict = @{@"per_page" : @(me.query.perPage ?: results.count),
+                         @"total" : @(results.count),
+                         @"page" : @(1)}.copy;
+        }
+
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
         for (NSDictionary *itemDict in results) {
             id item = [me itemForDict:itemDict];
-            if (item) { // this should never be nil. but it has been in some crash logs. why?
+            if (item) {
                 [newItems addObject:item];
             }
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            me.meta = dict[@"meta"];
+            me.meta = metaDict;
             if (me.itemsAreFromCache) {
                 me.itemsAreFromCache = NO;
                 [me.items removeAllObjects];    // blitz over it with fresh data

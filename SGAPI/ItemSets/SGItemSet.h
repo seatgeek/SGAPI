@@ -49,6 +49,16 @@ request has completed.
  */
 @property (nullable, nonatomic, copy) void (^onPageLoadFailed)(NSError* __nonnull error);
 
+/**
+ A block assigned to `onPageLoadRetry` will be called after a page request
+ failed to load, and then begins to fetch again due to network reachability
+
+ events.onPageLoadRetry = ^ {
+ [self showLoadingSpinner];
+ };
+ */
+@property (nullable, nonatomic, copy) void (^onPageLoadRetry)();
+
 /** @name Fetching results */
 
 /**
