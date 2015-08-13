@@ -233,6 +233,10 @@ NSMutableDictionary *_globalParams;
         case SGHTTPRequestMethodPatch:
             request = [SGHTTPRequest patchRequestWithURL:self.URL];
             break;
+        case SGHTTPRequestMethodMultipartPost:
+            NSAssert(NO, @"SGQuery does not support multi-part post requests directly.");
+            request = [SGHTTPRequest postRequestWithURL:self.URL];
+            break;
     }
     request.requestHeaders = self.requestHeaders.copy;
     return request;
