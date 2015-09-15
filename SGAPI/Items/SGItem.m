@@ -4,7 +4,7 @@
 
 #import <objc/runtime.h>
 #import "SGItem.h"
-#import "NSDictionary+NullCleanse.h"
+#import <SGHTTPRequest/NSObject+SGHTTPRequest.h>
 
 static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
@@ -23,7 +23,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 - (id)initWithCoder:(NSCoder *)coder {
     self = [super init];
-    self.dict = [coder decodeObjectForKey:@"dict"];
+    self.dict = [[coder decodeObjectForKey:@"dict"] sghttp_nullCleansedWithLoggingURL:nil];
     return self;
 }
 
@@ -34,7 +34,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 #pragma mark - Setters
 
 - (void)setDict:(NSDictionary *)dict {
-    _dict = dict.nullCleansed;
+    _dict = dict;
 
     NSDictionary *keys = self.class.resultFields;
 

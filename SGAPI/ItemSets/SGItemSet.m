@@ -67,7 +67,7 @@
 
     __weakSelf me = self;
     req.onSuccess = ^(SGHTTPRequest *_req) {
-        [me processResults:_req.responseData];
+        [me processResults:_req.responseData url:_req.url.absoluteString];
     };
     req.onFailure = ^(SGHTTPRequest *_req) {
         me.fetching = NO;
@@ -90,11 +90,11 @@
     self.fetching = NO;
 }
 
-- (void)processResults:(NSData *)data {
+- (void)processResults:(NSData *)data url:(NSString *)url {
     __weakSelf me = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSError *error = nil;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *dict = [SGJSONSerialization JSONObjectWithData:data error:&error logURL:url];
         me.lastResponseDict = dict;
 
         if (error) {
