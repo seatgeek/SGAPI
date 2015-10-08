@@ -40,7 +40,7 @@
 * Some result items have a `title` value and some a `name`. For convenience
 * both can be accessed via `title`.
 */
-- (NSString *)title;
+- (nullable NSString *)title;
 
 /**
  * The date of last successful fetch
@@ -54,15 +54,15 @@
 /**
 * The raw API result dictionary.
 */
-@property (nonatomic, strong) NSDictionary *dict;
+@property (nullable, nonatomic, strong) NSDictionary *dict;
 
-+ (NSDateFormatter *)localDateParser;
-+ (NSDateFormatter *)utcDateParser;
++ (nonnull NSDateFormatter *)localDateParser;
++ (nonnull NSDateFormatter *)utcDateParser;
 
 #pragma mark - Ignore plz
 
-+ (NSDictionary *)resultFields;
-+ (id)itemForDict:(NSDictionary *)dict;
-+ (id)valueFor:(id)value withType:(Class)requiredType;
++ (nonnull NSDictionary *)resultFields;
++ (nonnull id)itemForDict:(nullable NSDictionary *)dict;
++ (nullable id)valueFor:(nullable id)value withType:(nonnull Class)requiredType;
 
 @end

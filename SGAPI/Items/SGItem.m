@@ -12,7 +12,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 // abstract. implemented in subclass
 + (NSDictionary *)resultFields {
-    return nil;
+    return @{};
 }
 
 + (id)itemForDict:(NSDictionary *)dict {
@@ -94,7 +94,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 #pragma mark - Type Conversion
 
-+ (id)valueFor:(id)value withType:(Class)requiredType {
++ (nullable id)valueFor:(nullable id)value withType:(nonnull Class)requiredType {
 
     // nil or correct type, so send it back
     if (!value || [value isKindOfClass:requiredType]) {
