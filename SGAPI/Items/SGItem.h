@@ -16,25 +16,25 @@
 /**
 * The type specific unique ID for the API result item.
 */
-@property (nonatomic, readonly, strong) NSString *ID;
+@property (nullable, nonatomic, readonly, strong) NSString *ID;
 
 /**
 * The item's [seatgeek.com](http://seatgeek.com) website URL.
 */
-@property (nonatomic, readonly, copy) NSString *url;
+@property (nullable, nonatomic, readonly, copy) NSString *url;
 
 /**
 * `score` indicates the item's relative popularity within its type. Scores are
 * floating point values in the range of 0 to 1. See
 * [SeatGeek Platform docs](http://platform.seatgeek.com) for further details.
 */
-@property (nonatomic, readonly, strong) NSNumber *score;
+@property (nullable, nonatomic, readonly, strong) NSNumber *score;
 
 /**
 * Type specific statistics for the result item. For example an event item might
 * include a listing count and average/high/low price values.
 */
-@property (nonatomic, readonly, strong) NSDictionary *stats;
+@property (nullable, nonatomic, readonly, strong) NSDictionary *stats;
 
 /**
 * Some result items have a `title` value and some a `name`. For convenience
@@ -54,7 +54,8 @@
 + (NSDateFormatter *)localDateParser;
 + (NSDateFormatter *)utcDateParser;
 
-// ignore plz
+#pragma mark - Ignore plz
+
 + (NSDictionary *)resultFields;
 + (id)itemForDict:(NSDictionary *)dict;
 + (id)valueFor:(id)value withType:(Class)requiredType;
