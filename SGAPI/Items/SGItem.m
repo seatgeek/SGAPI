@@ -24,11 +24,13 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 - (id)initWithCoder:(NSCoder *)coder {
     self = [super init];
     self.dict = [[coder decodeObjectForKey:@"dict"] sghttp_nullCleansedWithLoggingURL:nil];
+    self.lastFetched = [coder decodeObjectForKey:@"lastFetched"];
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:self.dict forKey:@"dict"];
+    [coder encodeObject:self.lastFetched forKey:@"lastFetched"];
 }
 
 #pragma mark - Setters
