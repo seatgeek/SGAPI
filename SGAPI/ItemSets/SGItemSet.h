@@ -14,6 +14,8 @@
 
 @interface SGItemSet : NSObject
 
+#pragma mark - Modifying the API query
+
 /** @name Modifying the API query */
 
 /**
@@ -24,6 +26,8 @@ An <SGQuery> instance for defining the parameters and filters of the API query.
     events.query.perPage = 30;
 */
 @property (nullable, nonatomic, strong) SGQuery *query;
+
+#pragma mark - State change callbacks
 
 /** @name State change callbacks */
 
@@ -58,6 +62,8 @@ request has completed.
  };
  */
 @property (nullable, nonatomic, copy) void (^onPageLoadRetry)();
+
+#pragma mark - Fetching results
 
 /** @name Fetching results */
 
@@ -94,7 +100,14 @@ request has completed.
 */
 - (BOOL)fetching;
 
+#pragma mark - Content inspection
+
 /** @name Content inspection */
+
+/**
+ * The date of last successful fetch
+ */
+- (nullable NSDate *)lastFetched;
 
 /**
 * Returns the page number of the last fetched page.
@@ -134,6 +147,8 @@ request has completed.
 */
 - (NSUInteger)count;
 
+#pragma mark - Caching results
+
 /** @name Caching results */
 
 /**
@@ -165,6 +180,8 @@ request has completed.
 */
 - (void)reset;
 
+#pragma mark - Status bar indicator
+
 /** @name Status bar indicator */
 
 /**
@@ -173,11 +190,10 @@ request has completed.
 */
 @property (nonatomic, assign) BOOL allowStatusBarSpinner;
 
-// ignore plz
+#pragma mark - Ignore plz
+
 @property (nonnull, nonatomic, copy) NSString *resultArrayKey;
-
 - (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
-
 - (nullable NSDictionary *)lastResponseDict;
 
 @end

@@ -6,9 +6,9 @@
 #import "SGItemSet.h"
 #import "SGHTTPRequest.h"
 #import "SGQuery.h"
+#import "SGItem.h"
 
 @interface SGItemSet ()
-
 @property (nonatomic, strong) NSMutableOrderedSet *items;
 @property (nonatomic, strong) NSDictionary *meta;
 @property (nonatomic, assign) BOOL fetching;
@@ -16,7 +16,7 @@
 @property (nonatomic, strong) SGHTTPRequest *request;
 @property (nonatomic, assign) BOOL itemsAreFromCache;
 @property (nonatomic, strong) NSDictionary *lastResponseDict;
-
+@property (nonatomic, strong) NSDate *lastFetched;
 @end
 
 @implementation SGItemSet
@@ -121,7 +121,8 @@
 
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
         for (NSDictionary *itemDict in results) {
-            id item = [me itemForDict:itemDict];
+            SGItem *item = [me itemForDict:itemDict];
+            item.lastFetched = NSDate.date;
             if (item) {
                 [newItems addObject:item];
             }
@@ -143,6 +144,7 @@
                 reallyNewItems = newItems;
             }
             me.fetching = NO;
+            me.lastFetched = NSDate.date;
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }

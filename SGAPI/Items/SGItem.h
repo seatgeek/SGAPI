@@ -42,6 +42,11 @@
 */
 - (NSString *)title;
 
+/**
+ * The date of last successful fetch
+ */
+@property (nullable, nonatomic, strong) NSDate *lastFetched;
+
 #pragma mark - Raw results
 
 /** @name Raw result data */
