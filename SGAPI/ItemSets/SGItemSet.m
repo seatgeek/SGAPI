@@ -231,10 +231,6 @@
     return self.items;
 }
 
-- (NSOrderedSet *)orderdSet {
-    return self.orderedSet;
-}
-
 - (id)firstObject {
     return self.items.firstObject;
 }

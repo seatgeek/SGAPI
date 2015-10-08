@@ -129,7 +129,6 @@ request has completed.
 * Returns an `NSOrderedSet` of the items in the set.
 */
 - (nullable NSOrderedSet *)orderedSet;
-- (nullable NSOrderedSet *)orderdSet __deprecated;
 
 /**
 * Returns the first item in the set.
