@@ -151,24 +151,11 @@ request has completed.
 /** @name Caching results */
 
 /**
-* Caches the current results set to disk.
-*/
-- (void)cacheItemsWithCacheKey:(NSString * __nonnull)cacheKey;
-
-/**
-* Returns YES if cached results are available for the given cache key.
-*/
-- (BOOL)hasCachedItemsForCacheKey:(NSString * __nonnull)cacheKey;
-
-/**
-* Restores the results set to a previously cached state.
-*/
-- (void)loadCachedItemsForCacheKey:(NSString * __nonnull)cacheKey;
-
-/**
-* Returns YES if the current items were loaded from cache.
-*/
-- (BOOL)itemsAreFromCache;
+ * Set cacheKey to a unique value within the item set class's context and the item set
+ * will immediately restore any matching previous results from cache, and will save
+ * any future results to cache, for restoring between sessions.
+ */
+@property (nullable, nonatomic, strong) NSString *cacheKey;
 
 /** @name Resetting internal state */
 

@@ -14,7 +14,6 @@
 @property (nonatomic, assign) BOOL fetching;
 @property (nonatomic, assign) int lastFetchedPage;
 @property (nonatomic, strong) SGHTTPRequest *request;
-@property (nonatomic, assign) BOOL itemsAreFromCache;
 @property (nonatomic, strong) NSDictionary *lastResponseDict;
 @property (nonatomic, strong) NSDate *lastFetched;
 @end
@@ -130,10 +129,6 @@
 
         dispatch_async(dispatch_get_main_queue(), ^{
             me.meta = metaDict;
-            if (me.itemsAreFromCache) {
-                me.itemsAreFromCache = NO;
-                [me.items removeAllObjects];    // blitz over it with fresh data
-            }
             NSMutableOrderedSet *reallyNewItems;
             if (me.items) {
                 reallyNewItems = newItems.mutableCopy;
@@ -145,6 +140,7 @@
             }
             me.fetching = NO;
             me.lastFetched = NSDate.date;
+            [me cacheItems];
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
@@ -154,31 +150,39 @@
 
 #pragma mark - Caching
 
-- (void)cacheItemsWithCacheKey:(NSString *)cacheKey {
-    if (!cacheKey.length) {
-        return;
-    }
-
-    cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.items];
-    [SGCache addData:data forCacheKey:cacheKey];
+- (void)setCacheKey:(NSString *)cacheKey {
+    _cacheKey = cacheKey;
+    [self loadCachedItems];
 }
 
-- (BOOL)hasCachedItemsForCacheKey:(NSString *)cacheKey {
-    cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
-    return [SGCache haveFileForCacheKey:cacheKey];
+- (NSString *)internalCacheKey {
+    return [NSString stringWithFormat:@"%@:%@", self.class, self.cacheKey];
 }
 
-- (void)loadCachedItemsForCacheKey:(NSString *)cacheKey {
-    if (![self hasCachedItemsForCacheKey:cacheKey]) {
+- (void)cacheItems {
+    if (!self.cacheKey.length || !self.lastFetched) {
         return;
     }
+    NSDictionary *cacheDict = @{@"items":self.items, @"lastFetched":self.internalCacheKey};
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cacheDict];
+    [SGCache addData:data forCacheKey:self.internalCacheKey];
+}
 
-    cacheKey = [NSString stringWithFormat:@"%@:%@", self.class, cacheKey];
-    NSData *data = [SGCache fileForCacheKey:cacheKey];
-    NSOrderedSet *orderedSet = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    self.items = orderedSet.mutableCopy;
-    self.itemsAreFromCache = (self.items.count > 0);
+- (BOOL)haveCachedItems {
+    return [SGCache haveFileForCacheKey:self.internalCacheKey];
+}
+
+- (void)loadCachedItems {
+    if (!self.haveCachedItems) {
+        return;
+    }
+    NSData *data = [SGCache fileForCacheKey:self.internalCacheKey];
+    NSDictionary *cacheDict = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (![cacheDict isKindOfClass:NSDictionary.class]) {
+        return;
+    }
+    self.items = [cacheDict[@"items"] mutableCopy];
+    self.lastFetched = cacheDict[@"lastFetched"];
 }
 
 #pragma mark - Setters
