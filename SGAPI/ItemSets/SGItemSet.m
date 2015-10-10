@@ -186,6 +186,9 @@
     }
     self.items = [cacheDict[@"items"] mutableCopy];
     self.lastFetched = cacheDict[@"lastFetched"];
+    for (SGItem *item in self.items) {
+        item.parentSet = self;
+    }
 }
 
 #pragma mark - Setters
