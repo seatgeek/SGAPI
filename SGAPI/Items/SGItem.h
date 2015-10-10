@@ -2,7 +2,11 @@
 //  Created by matt on 7/01/13.
 //
 
-@class SGItemSet;
+#define SGItemFetchStarted @"SGItemFetchStarted"
+#define SGItemFetchSucceeded @"SGItemFetchSucceeded"
+#define SGItemFetchFailed @"SGItemFetchFailed"
+
+@class SGItemSet, SGQuery;
 
 /**
 * `SGItem` is the abstract model class for result items. The concrete models
@@ -44,6 +48,23 @@
 */
 - (nullable NSString *)title;
 
+#pragma mark - Fetching
+
+@property (nullable, nonatomic, strong) SGQuery *query;
+
+/** @name Fetching */
+
+/**
+* Fetch the results based on the item's ID. If the item is already <fetching>
+* `fetch` will do nothing.
+*/
+- (void)fetch;
+
+/**
+* Returns YES if a fetch is in progress.
+*/
+- (BOOL)fetching;
+
 /**
  * The date of last successful fetch
  */
@@ -69,6 +90,7 @@
 #pragma mark - Ignore plz
 
 + (nonnull NSDictionary *)resultFields;
+@property (nonnull, nonatomic, copy) NSString *resultItemKey;
 + (nonnull id)itemForDict:(nullable NSDictionary *)dict;
 + (nullable id)valueFor:(nullable id)value withType:(nonnull Class)requiredType;
 - (void)setNeedsRefresh;

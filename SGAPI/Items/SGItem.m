@@ -4,12 +4,16 @@
 
 #import <objc/runtime.h>
 #import "SGItem.h"
+#import "SGQuery.h"
 #import <SGHTTPRequest/NSObject+SGHTTPRequest.h>
+#import <MGEvents/NSObject+MGEvents.h>
 
 static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 @interface SGItem ()
+@property (nonatomic, assign) BOOL fetching;
 @property (nonatomic, assign) BOOL needsRefresh;
+@property (nonatomic, strong) SGHTTPRequest *request;
 @end
 
 @implementation SGItem
@@ -25,7 +29,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     return item;
 }
 
-- (id)initWithCoder:(NSCoder *)coder {
+- (nullable instancetype)initWithCoder:(NSCoder *)coder {
     self = [super init];
     self.dict = [[coder decodeObjectForKey:@"dict"] sghttp_nullCleansedWithLoggingURL:nil];
     self.lastFetched = [coder decodeObjectForKey:@"lastFetched"];
@@ -35,6 +39,53 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:self.dict forKey:@"dict"];
     [coder encodeObject:self.lastFetched forKey:@"lastFetched"];
+}
+
+#pragma mark - Fetching
+
+- (void)fetch {
+    if (self.fetching) {
+        return;
+    }
+
+    if (!self.query || !self.resultItemKey) {
+#ifdef DEBUG
+        NSAssert(NO, @"Called fetch on an SGitem that doesn't know how to fetch. Don't do that.");
+#endif
+        return;
+    }
+
+    self.fetching = YES;
+
+    SGHTTPRequest *req = [self.query requestWithMethod:SGHTTPRequestMethodGet];
+    if (SGQuery.consoleLogging || YES) {
+        req.logging = req.logging | (SGHTTPLogRequests | SGHTTPLogErrors);
+    }
+
+    __weakSelf me = self;
+    req.onSuccess = ^(SGHTTPRequest *_req) {
+        NSDictionary *responseDict = [SGJSONSerialization JSONObjectWithData:_req.responseData];
+        NSDictionary *itemDict = responseDict[self.resultItemKey];
+        if (!itemDict) {
+            [me trigger:SGItemFetchFailed];
+        }
+        me.dict = itemDict;
+        me.fetching = NO;
+        [me trigger:SGItemFetchSucceeded withContext:me];
+    };
+
+    req.onFailure = ^(SGHTTPRequest *_req) {
+        me.fetching = NO;
+        [me trigger:SGItemFetchFailed withContext:_req.error];
+    };
+
+    req.onNetworkReachable = ^{
+        [me fetch];
+    };
+
+    [req start];
+    self.request = req;
+    [self trigger:SGItemFetchStarted withContext:self];
 }
 
 #pragma mark - Setters
@@ -132,6 +183,10 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 }
 
 #pragma mark - Getters
+
+- (BOOL)fetching {
+    return _fetching;
+}
 
 - (NSString *)title {
     return nil;
