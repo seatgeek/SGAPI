@@ -24,10 +24,12 @@
 
 - (void)setupRelationships {
     self.venue = [SGVenue itemForDict:self.dict[@"venue"]];
+    self.venue.parentItem = self;
 
     NSMutableArray *performers = @[].mutableCopy;
     for (NSDictionary *performerDict in self.dict[@"performers"]) {
         SGPerformer *performer = [SGPerformer itemForDict:performerDict];
+        performer.parentItem = self;
         [performers addObject:performer];
         if (performerDict[@"primary"]) {
             self.primaryPerformer = performer;

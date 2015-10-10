@@ -2,6 +2,8 @@
 //  Created by matt on 7/01/13.
 //
 
+@class SGItemSet;
+
 /**
 * `SGItem` is the abstract model class for result items. The concrete models
 * are <SGEvent>, <SGPerformer>, <SGVenue>.
@@ -47,6 +49,11 @@
  */
 @property (nullable, nonatomic, strong) NSDate *lastFetched;
 
+#pragma mark - Composite properties
+
+@property (nonatomic, weak) SGItemSet *parentSet;
+@property (nonatomic, weak) SGItem *parentItem;
+
 #pragma mark - Raw results
 
 /** @name Raw result data */
@@ -64,5 +71,7 @@
 + (nonnull NSDictionary *)resultFields;
 + (nonnull id)itemForDict:(nullable NSDictionary *)dict;
 + (nullable id)valueFor:(nullable id)value withType:(nonnull Class)requiredType;
+- (void)setNeedsRefresh;
+- (BOOL)needsRefresh;
 
 @end

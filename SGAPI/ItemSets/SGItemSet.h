@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class SGQuery;
+@class SGQuery, SGItem;
 
 /**
 * `SGItemSet` is the abstract base class for item sets, providing the core
@@ -176,10 +176,17 @@ request has completed.
 */
 @property (nonatomic, assign) BOOL allowStatusBarSpinner;
 
+#pragma mark - Composite properties
+
+@property (nonatomic, weak) SGItemSet *parentSet;
+@property (nonatomic, weak) SGItem *parentItem;
+
 #pragma mark - Ignore plz
 
 @property (nonnull, nonatomic, copy) NSString *resultArrayKey;
 - (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
 - (nullable NSDictionary *)lastResponseDict;
+- (void)setNeedsRefresh;
+- (BOOL)needsRefresh;
 
 @end

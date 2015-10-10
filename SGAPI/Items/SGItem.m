@@ -8,6 +8,10 @@
 
 static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
+@interface SGItem ()
+@property (nonatomic, assign) BOOL needsRefresh;
+@end
+
 @implementation SGItem
 
 // abstract. implemented in subclass
@@ -53,6 +57,12 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
                   forKey:key];
         }
     }
+
+    self.needsRefresh = NO;
+}
+
+- (void)setNeedsRefresh {
+    self.needsRefresh = YES;
 }
 
 #pragma mark - Shared Date Parsers

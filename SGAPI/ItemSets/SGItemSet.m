@@ -16,6 +16,7 @@
 @property (nonatomic, strong) SGHTTPRequest *request;
 @property (nonatomic, strong) NSDictionary *lastResponseDict;
 @property (nonatomic, strong) NSDate *lastFetched;
+@property (nonatomic, assign) BOOL needsRefresh;
 @end
 
 @implementation SGItemSet
@@ -121,6 +122,7 @@
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
         for (NSDictionary *itemDict in results) {
             SGItem *item = [me itemForDict:itemDict];
+            item.parentSet = self;
             item.lastFetched = NSDate.date;
             if (item) {
                 [newItems addObject:item];
@@ -139,6 +141,7 @@
                 reallyNewItems = newItems;
             }
             me.fetching = NO;
+            me.needsRefresh = NO;
             me.lastFetched = NSDate.date;
             [me cacheItems];
             if (me.onPageLoaded) {
@@ -190,6 +193,10 @@
 - (void)setMeta:(NSDictionary *)meta {
     _meta = meta;
     self.lastFetchedPage = [meta[@"page"] intValue];
+}
+
+- (void)setNeedsRefresh {
+    self.needsRefresh = YES;
 }
 
 #pragma mark - Getters
