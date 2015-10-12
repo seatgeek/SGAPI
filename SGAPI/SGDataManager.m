@@ -18,22 +18,10 @@
 
 @implementation SGDataManager
 
-- (instancetype)init {
-    self = [super init];
-
-    __weakSelf me = self;
-    [self onChangeOf:@"itemSet" do:^{
-        [me when:me.itemSet does:SGItemSetFetchSucceeded do:^{
-            me.lastRefreshFailed = NO;
-            [me trigger:SGDataManagerRefreshSucceeded];
-        }];
-        [me when:me.itemSet does:SGItemSetFetchFailed do:^{
-            me.lastRefreshFailed = YES;
-            [me trigger:SGDataManagerRefreshFailed];
-        }];
-    }];
-
-    return self;
++ (instancetype)managerForItemSet:(SGItemSet *)itemSet {
+    SGDataManager *manager = self.new;
+    manager.itemSet = itemSet;
+    return manager;
 }
 
 #pragma mark - Refreshing data
@@ -111,8 +99,21 @@
     return self.itemSet.query.perPage;
 }
 
-- (SGItemSet *)itemSet {
-    return nil;
+#pragma mark - Setters
+
+- (void)setItemSet:(SGItemSet *)itemSet {
+    _itemSet = itemSet;
+
+    __weakSelf me = self;
+    self.itemSet.dataManager = self;
+    [self when:itemSet does:SGItemSetFetchSucceeded do:^{
+        me.lastRefreshFailed = NO;
+        [me trigger:SGDataManagerRefreshSucceeded];
+    }];
+    [self when:itemSet does:SGItemSetFetchFailed do:^{
+        me.lastRefreshFailed = YES;
+        [me trigger:SGDataManagerRefreshFailed];
+    }];
 }
 
 @end

@@ -24,6 +24,10 @@ Abstract base class. SGDataManagers do the following:
  */
 @interface SGDataManager : NSObject
 
+@property (nonatomic, strong) SGItemSet *itemSet;
+
++ (instancetype)managerForItemSet:(SGItemSet *)itemSet;
+
 #pragma mark - Refreshing data
 
 /**

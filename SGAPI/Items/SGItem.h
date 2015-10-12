@@ -6,7 +6,7 @@
 #define SGItemFetchSucceeded @"SGItemFetchSucceeded"
 #define SGItemFetchFailed @"SGItemFetchFailed"
 
-@class SGItemSet, SGQuery;
+@class SGItemSet, SGQuery, SGDataManager;
 
 /**
 * `SGItem` is the abstract model class for result items. The concrete models
@@ -93,6 +93,7 @@
 @property (nonnull, nonatomic, copy) NSString *resultItemKey;
 + (nonnull id)itemForDict:(nullable NSDictionary *)dict;
 + (nullable id)valueFor:(nullable id)value withType:(nonnull Class)requiredType;
+@property (nullable, nonatomic, weak) SGDataManager *dataManager;
 - (void)setNeedsRefresh;
 - (BOOL)needsRefresh;
 

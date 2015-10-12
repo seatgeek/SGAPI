@@ -8,7 +8,7 @@
 #define SGItemSetFetchSucceeded @"SGItemSetFetchSucceeded"
 #define SGItemSetFetchFailed @"SGItemSetFetchFailed"
 
-@class SGQuery, SGItem;
+@class SGQuery, SGItem, SGDataManager;
 
 /**
 * `SGItemSet` is the abstract base class for item sets, providing the core
@@ -190,6 +190,7 @@ request has completed.
 @property (nonnull, nonatomic, copy) NSString *resultArrayKey;
 - (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
 - (nullable NSDictionary *)lastResponseDict;
+@property (nullable, nonatomic, weak) SGDataManager *dataManager;
 - (void)setNeedsRefresh;
 - (BOOL)needsRefresh;
 

@@ -7,6 +7,7 @@
 #import "SGHTTPRequest.h"
 #import "SGQuery.h"
 #import "SGItem.h"
+#import "SGDataManager.h"
 
 @interface SGItemSet ()
 @property (nonatomic, strong) NSMutableOrderedSet *items;
@@ -24,6 +25,7 @@
 - (id)init {
     self = [super init];
     self.allowStatusBarSpinner = YES;
+    self.needsRefresh = YES;
     return self;
 }
 
@@ -68,7 +70,6 @@
     __weakSelf me = self;
     req.onSuccess = ^(SGHTTPRequest *_req) {
         [me processResults:_req.responseData url:_req.url.absoluteString];
-        [me trigger:SGItemSetFetchSucceeded withContext:me];
     };
 
     req.onFailure = ^(SGHTTPRequest *_req) {
@@ -104,12 +105,12 @@
         me.lastResponseDict = dict;
 
         if (error) {
-            if (me.onPageLoadFailed) {
-                dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (me.onPageLoadFailed) {
                     me.onPageLoadFailed(error);
-                });
+                }
                 [me trigger:SGItemSetFetchFailed withContext:error];
-            }
+            });
             return;
         }
 
@@ -129,8 +130,11 @@
         NSMutableOrderedSet *newItems = NSMutableOrderedSet.orderedSet;
         for (NSDictionary *itemDict in results) {
             SGItem *item = [me itemForDict:itemDict];
-            item.parentSet = self;
             item.lastFetched = NSDate.date;
+            item.parentSet = self;
+            if (self.dataManager) {
+                item.dataManager = self.dataManager;
+            }
             if (item) {
                 [newItems addObject:item];
             }
@@ -154,6 +158,7 @@
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
+            [me trigger:SGItemSetFetchSucceeded withContext:me];
         });
     });
 }
