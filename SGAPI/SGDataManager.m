@@ -104,16 +104,33 @@
 - (void)setItemSet:(SGItemSet *)itemSet {
     _itemSet = itemSet;
 
-    __weakSelf me = self;
     self.itemSet.dataManager = self;
-    [self when:itemSet does:SGItemSetFetchSucceeded do:^{
+
+    __weakSelf me = self;
+    [self when:itemSet does:SGItemSetFetchSucceeded doWithContext:^(NSOrderedSet *newItems) {
+
+        // if a child item refetches, we want to recache the entire set
+        for (SGItem *item in newItems) {
+            [me when:item does:SGItemFetchSucceeded do:^{
+                [me.itemSet cacheItems];
+            }];
+        }
+
         me.lastRefreshFailed = NO;
         [me trigger:SGDataManagerRefreshSucceeded];
     }];
+
     [self when:itemSet does:SGItemSetFetchFailed do:^{
         me.lastRefreshFailed = YES;
         [me trigger:SGDataManagerRefreshFailed];
     }];
+
+    // if a child item refetches, we want to recache the entire set
+    for (SGItem *item in itemSet.orderedSet) {
+        [self when:item does:SGItemFetchSucceeded do:^{
+            [me.itemSet cacheItems];
+        }];
+    }
 }
 
 @end

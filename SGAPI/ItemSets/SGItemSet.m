@@ -89,7 +89,7 @@
 
     [req start];
     self.request = req;
-    [self trigger:SGItemSetFetchStarted withContext:self];
+    [self trigger:SGItemSetFetchStarted];
 }
 
 - (void)cancelFetch {
@@ -158,7 +158,7 @@
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
-            [me trigger:SGItemSetFetchSucceeded withContext:me];
+            [me trigger:SGItemSetFetchSucceeded withContext:reallyNewItems];
         });
     });
 }

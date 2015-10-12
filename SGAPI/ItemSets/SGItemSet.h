@@ -161,6 +161,11 @@ request has completed.
  */
 @property (nullable, nonatomic, strong) NSString *cacheKey;
 
+/**
+ * Force the result items to be cached again. Requires `cacheKey` to be set.
+ */
+- (void)cacheItems;
+
 /** @name Resetting internal state */
 
 /**
