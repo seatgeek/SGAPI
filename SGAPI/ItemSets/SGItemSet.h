@@ -4,6 +4,10 @@
 
 #import <Foundation/Foundation.h>
 
+#define SGItemSetFetchStarted @"SGItemSetFetchStarted"
+#define SGItemSetFetchSucceeded @"SGItemSetFetchSucceeded"
+#define SGItemSetFetchFailed @"SGItemSetFetchFailed"
+
 @class SGQuery, SGItem;
 
 /**

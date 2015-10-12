@@ -68,21 +68,27 @@
     __weakSelf me = self;
     req.onSuccess = ^(SGHTTPRequest *_req) {
         [me processResults:_req.responseData url:_req.url.absoluteString];
+        [me trigger:SGItemSetFetchSucceeded withContext:me];
     };
+
     req.onFailure = ^(SGHTTPRequest *_req) {
         me.fetching = NO;
         if (me.onPageLoadFailed) {
             me.onPageLoadFailed(_req.error);
         }
+        [me trigger:SGItemSetFetchFailed withContext:_req.error];
     };
+
     req.onNetworkReachable = ^{
         if (me.onPageLoadRetry) {
             me.onPageLoadRetry();
         }
         [me fetchNextPage];
     };
+
     [req start];
     self.request = req;
+    [self trigger:SGItemSetFetchStarted withContext:self];
 }
 
 - (void)cancelFetch {
@@ -102,6 +108,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     me.onPageLoadFailed(error);
                 });
+                [me trigger:SGItemSetFetchFailed withContext:error];
             }
             return;
         }
