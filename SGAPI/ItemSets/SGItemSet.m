@@ -43,6 +43,7 @@
     self.items = nil;
     self.lastFetchedPage = 0;
     self.meta = nil;
+    self.lastFetched = nil;
     [self cancelFetch];
 }
 
