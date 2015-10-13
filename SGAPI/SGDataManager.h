@@ -49,11 +49,6 @@ Abstract base class. SGDataManagers do the following:
 #pragma mark - Flagging data as in need of refresh
 
 /**
- * Mark the entire itemSet as `needsRefresh`. Will be refetched on next `refresh` call.
- */
-- (void)itemSetNeedsRefresh;
-
-/**
  * Mark a specific item as `needsRefresh`. Will be refetched on next `refresh` call.
  */
 - (void)needToRefreshItemOfKind:(Class)itemClass withID:(NSString *)itemID;

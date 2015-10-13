@@ -64,10 +64,6 @@
 
 #pragma mark - Flagging data as in need of refresh
 
-- (void)itemSetNeedsRefresh {
-   [self.itemSet setNeedsRefresh];
-}
-
 - (void)needToRefreshItemOfKind:(Class)itemClass withID:(NSString *)itemID {
     BOOL weHaveIt = [self setNeedsToRefreshOnItemOfKind:itemClass withID:itemID];
     if (!weHaveIt) { // we don't have the item, so refresh the entire set instead
