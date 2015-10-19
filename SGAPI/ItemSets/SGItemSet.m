@@ -155,7 +155,7 @@
             me.fetching = NO;
             me.needsRefresh = NO;
             me.lastFetched = NSDate.date;
-            [me cacheItems];
+            [me cacheContents];
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
@@ -168,37 +168,37 @@
 
 - (void)setCacheKey:(NSString *)cacheKey {
     _cacheKey = cacheKey;
-    [self loadCachedItems];
+    [self loadCachedContents];
 }
 
 - (NSString *)internalCacheKey {
-    return [NSString stringWithFormat:@"%@:%@", self.class, self.cacheKey];
+    return self.cacheKey.length ? [NSString stringWithFormat:@"%@:%@", self.class, self.cacheKey] : nil;
 }
 
-- (void)cacheItems {
-    if (!self.cacheKey.length || !self.lastFetched) {
+- (void)cacheContents {
+    if (!self.internalCacheKey.length || !self.lastFetched) {
         return;
     }
-    NSDictionary *cacheDict = @{@"items":self.items, @"lastFetched":self.internalCacheKey};
+    NSDictionary *cacheDict = @{@"items":self.items, @"lastFetched":self.lastFetched};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cacheDict];
     [SGCache addData:data forCacheKey:self.internalCacheKey];
 }
 
-- (BOOL)haveCachedItems {
+- (BOOL)haveCachedContents {
     return [SGCache haveFileForCacheKey:self.internalCacheKey];
 }
 
-- (void)loadCachedItems {
-    if (!self.haveCachedItems) {
+- (void)loadCachedContents {
+    if (!self.haveCachedContents) {
         return;
     }
     NSData *data = [SGCache fileForCacheKey:self.internalCacheKey];
-    NSDictionary *cacheDict = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if (![cacheDict isKindOfClass:NSDictionary.class]) {
+    NSDictionary *cachedContents = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (![cachedContents isKindOfClass:NSDictionary.class]) {
         return;
     }
-    self.items = [cacheDict[@"items"] mutableCopy];
-    self.lastFetched = cacheDict[@"lastFetched"];
+    self.items = [cachedContents[@"items"] mutableCopy];
+    self.lastFetched = cachedContents[@"lastFetched"];
     for (SGItem *item in self.items) {
         item.parentSet = self;
     }

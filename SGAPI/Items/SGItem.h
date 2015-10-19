@@ -48,11 +48,12 @@
 */
 - (nullable NSString *)title;
 
-#pragma mark - Fetching
+#pragma mark - Fetching and caching
+
+/** @name Fetching and caching */
 
 @property (nullable, nonatomic, strong) SGQuery *query;
-
-/** @name Fetching */
+- (nullable NSString *)cacheKey;
 
 /**
 * Fetch the results based on the item's ID. If the item is already <fetching>
@@ -70,7 +71,25 @@
  */
 @property (nullable, nonatomic, strong) NSDate *lastFetched;
 
+/**
+ * Some endpoints return partial item documents when returning arrays.
+ * This property will be true in those cases.
+ */
+@property (nonatomic, readonly, assign) BOOL hasPartialContents;
+
+/**
+ * Replace current contents with contents from cache. Returns NO if nothing found in cache.
+ */
+- (BOOL)loadCachedContents;
+
+/**
+ * Force the item contents to be cached again. Requires `cacheKey` to be set.
+ */
+- (void)cacheContents;
+
 #pragma mark - Composite properties
+
+/** @name Composite properties */
 
 @property (nonatomic, weak) SGItemSet *parentSet;
 @property (nonatomic, weak) SGItem *parentItem;
@@ -87,14 +106,17 @@
 + (nonnull NSDateFormatter *)localDateParser;
 + (nonnull NSDateFormatter *)utcDateParser;
 
+#pragma mark - Data Manager
+
+@property (nullable, nonatomic, weak) SGDataManager *dataManager;
+- (void)setNeedsRefresh;
+- (BOOL)needsRefresh;
+
 #pragma mark - Ignore plz
 
 + (nonnull NSDictionary *)resultFields;
 @property (nonnull, nonatomic, copy) NSString *resultItemKey;
 + (nonnull id)itemForDict:(nullable NSDictionary *)dict;
 + (nullable id)valueFor:(nullable id)value withType:(nonnull Class)requiredType;
-@property (nullable, nonatomic, weak) SGDataManager *dataManager;
-- (void)setNeedsRefresh;
-- (BOOL)needsRefresh;
 
 @end

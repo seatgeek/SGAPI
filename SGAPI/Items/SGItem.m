@@ -7,12 +7,14 @@
 #import "SGQuery.h"
 #import <SGHTTPRequest/NSObject+SGHTTPRequest.h>
 #import <MGEvents/NSObject+MGEvents.h>
+#import <SGImageCache/SGCache.h>
 
 static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 @interface SGItem ()
 @property (nonatomic, assign) BOOL fetching;
 @property (nonatomic, assign) BOOL needsRefresh;
+@property (nonatomic, assign) BOOL hasPartialContents;
 @property (nonatomic, strong) SGHTTPRequest *request;
 @end
 
@@ -41,7 +43,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     [coder encodeObject:self.lastFetched forKey:@"lastFetched"];
 }
 
-#pragma mark - Fetching
+#pragma mark - Fetching and caching
 
 - (void)fetch {
     if (self.fetching) {
@@ -71,7 +73,9 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
         }
         me.dict = itemDict;
         me.fetching = NO;
+        me.hasPartialContents = NO;
         me.lastFetched = NSDate.date;
+        [me cacheContents];
         [me trigger:SGItemFetchSucceeded withContext:me];
     };
 
@@ -87,6 +91,46 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     [req start];
     self.request = req;
     [self trigger:SGItemFetchStarted withContext:self];
+}
+
+- (BOOL)loadFullContentsFromCache {
+    if (!self.internalCacheKey) {
+        return NO;
+    }
+
+    return NO;
+}
+
+- (NSString *)internalCacheKey {
+    return self.cacheKey.length ? [NSString stringWithFormat:@"%@:%@", self.class, self.cacheKey] : nil;
+}
+
+- (void)cacheContents {
+    if (!self.internalCacheKey.length || self.hasPartialContents || !self.lastFetched) {
+        return;
+    }
+    NSDictionary *cacheDict = @{@"dict":self.dict, @"lastFetched":self.lastFetched};
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cacheDict];
+    [SGCache addData:data forCacheKey:self.internalCacheKey];
+}
+
+- (BOOL)haveCachedContents {
+    return [SGCache haveFileForCacheKey:self.internalCacheKey];
+}
+
+- (BOOL)loadCachedContents {
+    if (!self.haveCachedContents) {
+        return NO;
+    }
+    NSData *data = [SGCache fileForCacheKey:self.internalCacheKey];
+    NSDictionary *cachedContents = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (![cachedContents isKindOfClass:NSDictionary.class]) {
+        return NO;
+    }
+    self.dict = cachedContents[@"dict"];
+    self.lastFetched = cachedContents[@"lastFetched"];
+    self.hasPartialContents = NO;
+    return YES;
 }
 
 #pragma mark - Setters
@@ -190,6 +234,10 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 }
 
 - (NSString *)title {
+    return nil;
+}
+
+- (NSString *)cacheKey {
     return nil;
 }
 

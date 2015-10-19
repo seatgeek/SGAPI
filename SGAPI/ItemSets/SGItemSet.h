@@ -164,7 +164,7 @@ request has completed.
 /**
  * Force the result items to be cached again. Requires `cacheKey` to be set.
  */
-- (void)cacheItems;
+- (void)cacheContents;
 
 /** @name Resetting internal state */
 
