@@ -71,6 +71,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
         }
         me.dict = itemDict;
         me.fetching = NO;
+        me.lastFetched = NSDate.date;
         [me trigger:SGItemFetchSucceeded withContext:me];
     };
 
