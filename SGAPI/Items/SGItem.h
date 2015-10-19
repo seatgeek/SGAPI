@@ -75,7 +75,7 @@
  * Some endpoints return partial item documents when returning arrays.
  * This property will be true in those cases.
  */
-@property (nonatomic, readonly, assign) BOOL hasPartialContents;
+- (BOOL)hasPartialContents;
 
 /**
  * Replace current contents with contents from cache. Returns NO if nothing found in cache.
