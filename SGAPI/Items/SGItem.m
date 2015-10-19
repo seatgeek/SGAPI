@@ -16,9 +16,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 @property (nonatomic, strong) SGHTTPRequest *request;
 @end
 
-@implementation SGItem {
-    NSDictionary *_dict;
-}
+@implementation SGItem
 
 // abstract. implemented in subclass
 + (NSDictionary *)resultFields {
@@ -111,30 +109,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
         }
     }
 
-    if ([_dict[@"childItems"] isKindOfClass:NSDictionary.class]) {
-        self.childItemsDict = _dict[@"childItems"];
-    }
-
     self.needsRefresh = NO;
-}
-
-- (void)setChildItemsDict:(NSDictionary *)itemsDict {
-    for (NSString *propertyName in itemsDict) {
-        id propertyValue = itemsDict[propertyName];
-        if ([propertyValue isKindOfClass:NSDictionary.class]) { // an SGItem
-            NSDictionary *propertyDict = propertyValue;
-            Class itemClass = NSClassFromString(propertyDict[@"class"]);
-            [self setValue:[itemClass itemForDict:propertyDict[@"dict"]] forKey:propertyName];
-
-        } else if ([propertyValue isKindOfClass:NSArray.class]) { // an NSArray of SGItems
-            NSMutableArray *items = @[].mutableCopy;
-            for (NSDictionary *itemDict in propertyValue) {
-                Class itemClass = NSClassFromString(itemDict[@"class"]);
-                [items addObject:[itemClass itemForDict:itemDict[@"dict"]]];
-            }
-            [self setValue:items forKey:propertyName];
-        }
-    }
 }
 
 - (void)setNeedsRefresh {
@@ -215,43 +190,6 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 - (NSString *)title {
     return nil;
-}
-
-- (NSDictionary *)dict {
-    if (!self.childItems.count) {
-        return _dict;
-    }
-    NSMutableDictionary *dict = _dict.mutableCopy;
-    dict[@"childItems"] = self.childItemsDict;
-    return dict;
-}
-
-/**
- * can contain SGItem subclasses and NSArrays of SGItem subclasses, keyed by their property name
- * eg @{@"venue":self.venue, @"performers":self.performers}
- */
-- (nonnull NSDictionary *)childItems {
-    return @{};
-}
-
-// returns the contents of childItems in encodeable dict form
-- (NSDictionary *)childItemsDict {
-    NSDictionary *childItems = self.childItems;
-    NSMutableDictionary *childItemsDict = @{}.mutableCopy;
-    for (NSString *key in childItems) {
-        if ([childItems[key] isKindOfClass:SGItem.class]) {
-            SGItem *child = childItems[key];
-            childItemsDict[key] = @{@"class":NSStringFromClass(child.class), @"dict":child.dict};
-        } else if ([childItems[key] isKindOfClass:NSArray.class]) {
-            NSArray *children = childItems[key];
-            NSMutableArray *childDicts = @[].mutableCopy;
-            for (SGItem *child in children) {
-                [childDicts addObject:@{@"class":NSStringFromClass(child.class), @"dict":child.dict}];
-            }
-            childItemsDict[key] = childDicts;
-        }
-    }
-    return childItemsDict;
 }
 
 - (NSString *)description {
