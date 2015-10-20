@@ -27,9 +27,11 @@
 #pragma mark - Refreshing data
 
 - (void)refresh {
+    NSLog(@"[SGDataManager refresh]");
 
     // need to refresh the entire itemSet?
     if (self.itemSet.needsRefresh && !self.itemSet.fetching) {
+        NSLog(@"[SGDataManager itemSet reset + fetchNextPage]");
         [self.itemSet reset];
         [self.itemSet fetchNextPage];
         return;
@@ -38,6 +40,7 @@
     // need to refresh any individual items?
     for (SGItem *item in self.itemSet.orderedSet) {
         if (item.needsRefresh && !item.fetching) {
+            NSLog(@"[SGDataManager %@ fetch]", item.class);
             [item fetch];
         }
         [self fetchChildrenOf:item];
@@ -47,6 +50,7 @@
 - (void)fetchChildrenOf:(SGItem *)item {
     for (SGItem *child in item.childItems) {
         if (child.needsRefresh && !child.fetching) {
+            NSLog(@"[SGDataManager %@ fetch]", child.class);
             [child fetch];
         }
         [self fetchChildrenOf:child];
