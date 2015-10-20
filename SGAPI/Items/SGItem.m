@@ -237,6 +237,10 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     return nil;
 }
 
+- (NSSet *)childItems {
+    return nil;
+}
+
 - (NSString *)cacheKey {
     return nil;
 }

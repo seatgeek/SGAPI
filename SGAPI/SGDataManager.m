@@ -27,33 +27,29 @@
 #pragma mark - Refreshing data
 
 - (void)refresh {
-    if (self.itemSet.fetching) {
-        return; // nope. we's already busy
-    }
-
-    // todo: properly send start/succeeded/failed events at the right times
-    // todo: properly manage the `refreshing` bool
-
-    BOOL haveSentStartEvent = NO;
 
     // need to refresh the entire itemSet?
-    if (self.itemSet.needsRefresh) {
+    if (self.itemSet.needsRefresh && !self.itemSet.fetching) {
         [self.itemSet reset];
         [self.itemSet fetchNextPage];
-        [self trigger:SGDataManagerRefreshStarted];
-        haveSentStartEvent = YES;
         return;
     }
 
     // need to refresh any individual items?
     for (SGItem *item in self.itemSet.orderedSet) {
-        if (item.needsRefresh) {
+        if (item.needsRefresh && !item.fetching) {
             [item fetch];
-            if (!haveSentStartEvent) {
-                [self trigger:SGDataManagerRefreshStarted];
-                haveSentStartEvent = YES;
-            }
         }
+        [self fetchChildrenOf:item];
+    }
+}
+
+- (void)fetchChildrenOf:(SGItem *)item {
+    for (SGItem *child in item.childItems) {
+        if (child.needsRefresh && !child.fetching) {
+            [child fetch];
+        }
+        [self fetchChildrenOf:child];
     }
 }
 
@@ -105,12 +101,10 @@
     __weakSelf me = self;
     [self when:itemSet does:SGItemSetFetchSucceeded doWithContext:^(NSOrderedSet *newItems) {
         me.lastRefreshFailed = NO;
-        [me trigger:SGDataManagerRefreshSucceeded];
     }];
 
     [self when:itemSet does:SGItemSetFetchFailed do:^{
         me.lastRefreshFailed = YES;
-        [me trigger:SGDataManagerRefreshFailed];
     }];
 }
 

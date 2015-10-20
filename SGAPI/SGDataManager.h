@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define SGDataManagerRefreshStarted @"SGDataManagerRefreshStarted"
-#define SGDataManagerRefreshSucceeded @"SGDataManagerRefreshSucceeded"
-#define SGDataManagerRefreshFailed @"SGDataManagerRefreshFailed"
-
 @class SGItemSet;
 
 /**
@@ -35,11 +31,6 @@ Abstract base class. SGDataManagers do the following:
  * a successful server response replaces it.
  */
 - (void)refresh;
-
-/**
-* Returns YES if a refresh is in progress.
-*/
-- (BOOL)refreshing;
 
 /**
 * Returns YES if the last refresh failed.
