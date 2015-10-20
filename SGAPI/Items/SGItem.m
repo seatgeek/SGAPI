@@ -93,14 +93,6 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     [self trigger:SGItemFetchStarted withContext:self];
 }
 
-- (BOOL)loadFullContentsFromCache {
-    if (!self.internalCacheKey) {
-        return NO;
-    }
-
-    return NO;
-}
-
 - (NSString *)internalCacheKey {
     return self.cacheKey.length ? [NSString stringWithFormat:@"%@:%@", self.class, self.cacheKey] : nil;
 }
@@ -231,6 +223,14 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 - (BOOL)fetching {
     return _fetching;
+}
+
+- (NSTimeInterval)fetchAge {
+    if (!self.lastFetched) {
+        return -NSDate.distantPast.timeIntervalSinceNow;
+    } else {
+        return -self.lastFetched.timeIntervalSinceNow;
+    }
 }
 
 - (NSString *)title {

@@ -72,6 +72,11 @@
 @property (nullable, nonatomic, strong) NSDate *lastFetched;
 
 /**
+ * Seconds since `lastFetched`
+ */
+- (NSTimeInterval)fetchAge;
+
+/**
  * Some endpoints return partial item documents when returning arrays.
  * This property will be true in those cases.
  */
