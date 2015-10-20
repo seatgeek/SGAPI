@@ -81,16 +81,6 @@
     return NO;
 }
 
-#pragma mark - Fetching more paginated data
-
-- (void)fetchMoreIfAvailable {
-    [self.itemSet fetchNextPage];
-}
-
-- (NSUInteger)pageSize {
-    return self.itemSet.query.perPage;
-}
-
 #pragma mark - Setters
 
 - (void)setItemSet:(SGItemSet *)itemSet {

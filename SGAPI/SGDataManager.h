@@ -44,18 +44,4 @@ Abstract base class. SGDataManagers do the following:
  */
 - (void)needToRefreshItemOfKind:(Class)itemClass withID:(NSString *)itemID;
 
-#pragma mark - Fetching more paginated data
-
-/**
- * Calls `fetchNextPage` on the `itemSet`.
- */
-- (void)fetchMoreIfAvailable;
-
-/**
- * Returns `itemSet.perPage`.
- */
-- (NSUInteger)pageSize;
-
-- (SGItemSet *)itemSet;
-
 @end
