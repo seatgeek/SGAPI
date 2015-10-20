@@ -60,7 +60,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     self.fetching = YES;
 
     SGHTTPRequest *req = [self.query requestWithMethod:SGHTTPRequestMethodGet];
-    if (SGQuery.consoleLogging || YES) {
+    if (SGQuery.consoleLogging) {
         req.logging = req.logging | (SGHTTPLogRequests | SGHTTPLogErrors);
     }
 
