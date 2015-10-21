@@ -13,6 +13,7 @@
 #import "SGItem.h"
 
 @interface SGDataManager ()
+@property (nonatomic, strong) NSArray *resultItems;
 @property (nonatomic, assign) BOOL lastRefreshFailed;
 @end
 
@@ -83,9 +84,13 @@
 
     self.itemSet.dataManager = self;
 
+    // pick up any cached results
+    self.resultItems = itemSet.array;
+
     __weakSelf me = self;
     [self when:itemSet does:SGItemSetFetchSucceeded doWithContext:^(NSOrderedSet *newItems) {
         me.lastRefreshFailed = NO;
+        me.resultItems = me.itemSet.array;
     }];
 
     [self when:itemSet does:SGItemSetFetchFailed do:^{

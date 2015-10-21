@@ -20,9 +20,11 @@ Abstract base class. SGDataManagers do the following:
  */
 @interface SGDataManager : NSObject
 
-@property (nonatomic, strong) SGItemSet *itemSet;
+@property (nonnull, nonatomic, strong) SGItemSet *itemSet;
 
-+ (instancetype)managerForItemSet:(SGItemSet *)itemSet;
++ (nonnull instancetype)managerForItemSet:(nonnull SGItemSet *)itemSet;
+
+- (nullable NSArray *)resultItems;
 
 #pragma mark - Refreshing data
 
@@ -42,6 +44,6 @@ Abstract base class. SGDataManagers do the following:
 /**
  * Mark a specific item as `needsRefresh`. Will be refetched on next `refresh` call.
  */
-- (void)needToRefreshItemOfKind:(Class)itemClass withID:(NSString *)itemID;
+- (void)needToRefreshItemOfKind:(nonnull Class)itemClass withID:(nonnull NSString *)itemID;
 
 @end
