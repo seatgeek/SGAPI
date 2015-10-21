@@ -53,11 +53,6 @@
     }
 }
 
-- (BOOL)refreshing {
-    // todo: this might give wrong results if individual items are being refreshed instead
-    return self.itemSet.fetching;
-}
-
 #pragma mark - Flagging data as in need of refresh
 
 - (void)needToRefreshItemOfKind:(Class)itemClass withID:(NSString *)itemID {
@@ -69,13 +64,16 @@
 
 // returns NO if no matching item is found in our existing data
 - (BOOL)setNeedsToRefreshOnItemOfKind:(Class)itemClass withID:(NSString *)itemID {
-
-    // todo: need to be able to walk an infinitely deep tree of itemSets / items
-
     for (SGItem *item in self.itemSet.orderedSet) {
         if ([item isKindOfClass:itemClass] && [item.ID isEqualToString:itemID]) {
             [item setNeedsRefresh];
             return YES;
+        }
+        for (SGItem *child in item.childItems) {
+            if ([child isKindOfClass:itemClass] && [child.ID isEqualToString:itemID]) {
+                [child setNeedsRefresh];
+                return YES;
+            }
         }
     }
     return NO;
