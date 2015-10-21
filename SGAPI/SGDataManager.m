@@ -56,24 +56,21 @@
 #pragma mark - Flagging data as in need of refresh
 
 - (void)needToRefreshItemOfKind:(Class)itemClass withID:(NSString *)itemID {
-    BOOL weHaveIt = [self setNeedsToRefreshOnItemOfKind:itemClass withID:itemID];
+    BOOL weHaveIt = [self setNeedsToRefreshOnItemOfKind:itemClass withID:itemID in:self.itemSet.array];
     if (!weHaveIt) { // we don't have the item, so refresh the entire set instead
         [self.itemSet setNeedsRefresh];
     }
 }
 
 // returns NO if no matching item is found in our existing data
-- (BOOL)setNeedsToRefreshOnItemOfKind:(Class)itemClass withID:(NSString *)itemID {
-    for (SGItem *item in self.itemSet.orderedSet) {
+- (BOOL)setNeedsToRefreshOnItemOfKind:(Class)itemClass withID:(NSString *)itemID in:(NSArray *)items {
+    for (SGItem *item in items) {
         if ([item isKindOfClass:itemClass] && [item.ID isEqualToString:itemID]) {
             [item setNeedsRefresh];
             return YES;
         }
-        for (SGItem *child in item.childItems) {
-            if ([child isKindOfClass:itemClass] && [child.ID isEqualToString:itemID]) {
-                [child setNeedsRefresh];
-                return YES;
-            }
+        if ([self setNeedsToRefreshOnItemOfKind:itemClass withID:itemID in:item.childItems]) {
+            return YES;
         }
     }
     return NO;

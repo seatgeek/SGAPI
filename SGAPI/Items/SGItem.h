@@ -98,7 +98,7 @@
 
 @property (nonatomic, weak) SGItemSet *parentSet;
 @property (nonatomic, weak) SGItem *parentItem;
-- (nullable NSSet *)childItems;
+- (nullable NSArray *)childItems;
 
 #pragma mark - Raw results
 

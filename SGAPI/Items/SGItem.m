@@ -237,7 +237,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     return nil;
 }
 
-- (NSSet *)childItems {
+- (NSArray *)childItems {
     return nil;
 }
 
