@@ -16,6 +16,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 @property (nonatomic, assign) BOOL needsRefresh;
 @property (nonatomic, assign) BOOL hasPartialContents;
 @property (nonatomic, strong) SGHTTPRequest *request;
+@property (nonatomic, strong) NSError *lastFetchError;
 @end
 
 @implementation SGItem
@@ -72,6 +73,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
             [me trigger:SGItemFetchFailed];
         }
         me.dict = itemDict;
+        me.lastFetchError = nil;
         me.fetching = NO;
         me.hasPartialContents = NO;
         me.lastFetched = NSDate.date;
@@ -81,6 +83,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
     req.onFailure = ^(SGHTTPRequest *_req) {
         me.fetching = NO;
+        me.lastFetchError = _req.error;
         [me trigger:SGItemFetchFailed withContext:_req.error];
     };
 

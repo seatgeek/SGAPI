@@ -124,5 +124,6 @@
 @property (nonnull, nonatomic, copy) NSString *resultItemKey;
 + (nonnull id)itemForDict:(nullable NSDictionary *)dict;
 + (nullable id)valueFor:(nullable id)value withType:(nonnull Class)requiredType;
+- (nullable NSError *)lastFetchError;
 
 @end
