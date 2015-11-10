@@ -92,6 +92,12 @@
  */
 - (void)cacheContents;
 
+/**
+ * If this method returns YES (the default) item sets will cache their contents on successful fetch,
+ * when a cache key has been provided.
+ */
+- (BOOL)shouldCacheOnFetch;
+
 #pragma mark - Composite properties
 
 /** @name Composite properties */
