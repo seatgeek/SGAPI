@@ -193,6 +193,7 @@ request has completed.
 #pragma mark - Ignore plz
 
 @property (nonnull, nonatomic, copy) NSString *resultArrayKey;
+@property (nullable, nonatomic, strong, readonly) NSDictionary *meta;
 - (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
 - (nullable NSDictionary *)lastResponseDict;
 @property (nullable, nonatomic, weak) SGDataManager *dataManager;
