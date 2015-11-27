@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class SGItemSet;
+@class SGItemSet, SGItem;
 
 /**
 Abstract base class. SGDataManagers do the following:
@@ -53,6 +53,6 @@ Abstract base class. SGDataManagers do the following:
  * the response to its POST, can add the new object to the manager with this method, so
  * it's included before the next item set fetch completes.
  */
-- (void)addResultItem:(SGItem *)item;
+- (void)addResultItem:(nonnull SGItem *)item;
 
 @end
