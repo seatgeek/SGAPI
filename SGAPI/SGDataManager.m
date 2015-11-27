@@ -98,4 +98,14 @@
     }];
 }
 
+#pragma mark - Updates
+
+- (void)addResultItem:(SGItem *)item {
+    if (self.resultItems) {
+        self.resultItems = [self.resultItems arrayByAddingObject:item];
+    } else {
+        self.resultItems = @[ item ];
+    }
+}
+
 @end
