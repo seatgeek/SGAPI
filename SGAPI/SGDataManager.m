@@ -98,13 +98,22 @@
     }];
 }
 
-#pragma mark - Updates
+#pragma mark - Used by subclasses
 
 - (void)addResultItem:(SGItem *)item {
     if (self.resultItems) {
         self.resultItems = [self.resultItems arrayByAddingObject:item];
     } else {
         self.resultItems = @[ item ];
+    }
+}
+
+- (void)replaceResultItem:(SGItem *)updatedItem {
+    NSMutableArray *updatedResultItems = [self.resultItems mutableCopy];
+    NSInteger index = [updatedResultItems indexOfObject:updatedItem];
+    if (index != NSNotFound) {
+        updatedResultItems[index] = updatedItem;
+        self.resultItems = updatedResultItems;
     }
 }
 

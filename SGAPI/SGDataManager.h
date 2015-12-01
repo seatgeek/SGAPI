@@ -46,13 +46,18 @@ Abstract base class. SGDataManagers do the following:
  */
 - (void)needToRefreshItemOfKind:(nonnull Class)itemClass withID:(nonnull NSString *)itemID;
 
-#pragma mark - Updates
+#pragma mark - Used by subclasses
 
 /**
- * Client code that has caused the server to create an object, and received it back in
+ * Code that has caused the server to create an object, and received it back in
  * the response to its POST, can add the new object to the manager with this method, so
  * it's included before the next item set fetch completes.
  */
 - (void)addResultItem:(nonnull SGItem *)item;
+
+/**
+ * Similar to above, for when you've received an updated version of one of our result items.
+ */
+- (void)replaceResultItem:(nonnull SGItem *)updatedItem;
 
 @end
