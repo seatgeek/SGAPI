@@ -132,9 +132,9 @@
         for (NSDictionary *itemDict in results) {
             SGItem *item = [me itemForDict:itemDict];
             item.lastFetched = NSDate.date;
-            item.parentSet = self;
-            if (self.dataManager) {
-                item.dataManager = self.dataManager;
+            item.parentSet = me;
+            if (me.dataManager) {
+                item.dataManager = me.dataManager;
             }
             if (item) {
                 [newItems addObject:item];
