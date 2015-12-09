@@ -117,4 +117,10 @@
     }
 }
 
+- (void)removeResultItem:(nonnull SGItem *)item {
+    NSMutableArray *updatedResultItems = [self.resultItems mutableCopy];
+    [updatedResultItems removeObject:item];
+    self.resultItems = updatedResultItems;
+}
+
 @end

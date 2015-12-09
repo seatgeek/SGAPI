@@ -60,4 +60,11 @@ Abstract base class. SGDataManagers do the following:
  */
 - (void)replaceResultItem:(nonnull SGItem *)updatedItem;
 
+/**
+ * Code that has caused or noted a change that would remove an item from the result set
+ * can use this method to remove it immediately, rather than waiting for a refetch
+ * of the item set to complete.
+ */
+- (void)removeResultItem:(nonnull SGItem *)item;
+
 @end
