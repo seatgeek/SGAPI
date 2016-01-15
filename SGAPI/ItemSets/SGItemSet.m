@@ -29,12 +29,17 @@
     return self;
 }
 
+#pragma mark - For subclasses
+
 // abstract. implemented in subclasses
-- (id)itemForDict:(NSDictionary *)dict {
+- (nonnull id)itemForDict:(nonnull NSDictionary *)dict {
 #ifdef DEBUG
     NSAssert(NO, @"Called the abstract itemForDict: on SGItemSet. Don't do that.");
 #endif
     return nil;
+}
+
+- (void)doAdditionalProcessingWithServerResponseDict:(nonnull NSDictionary *)dict {
 }
 
 #pragma mark - Fetching and Processing
@@ -142,6 +147,7 @@
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
+            [me doAdditionalProcessingWithServerResponseDict:dict];
             me.meta = metaDict;
             NSMutableOrderedSet *reallyNewItems;
             if (me.items) {

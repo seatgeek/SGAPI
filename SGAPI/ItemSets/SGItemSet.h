@@ -18,6 +18,17 @@
 
 @interface SGItemSet : NSObject
 
+#pragma mark - Subclasses implement / override
+
+/** Subclasses must implement this */
+- (nonnull id)itemForDict:(nonnull NSDictionary *)dict;
+
+/**
+ * Subclasses can implement this method to pull other data out of the server
+ * response and set their properties.
+ */
+- (void)doAdditionalProcessingWithServerResponseDict:(nonnull NSDictionary *)dict;
+
 #pragma mark - Modifying the API query
 
 /** @name Modifying the API query */
