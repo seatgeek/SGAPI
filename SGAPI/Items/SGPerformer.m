@@ -20,15 +20,9 @@
             @"taxonomies":@"taxonomies",
             @"images":@"images",
             @"links":@"links",
-            @"homeVenueId":@"home_venue_id"
+            @"homeVenueId":@"home_venue_id",
+            @"hasUpcomingEvents":@"has_upcoming_events"
     };
-}
-#pragma mark - Setters
-
-- (void)setDict:(NSDictionary *)dict {
-    super.dict = dict;
-
-    _hasUpcomingEvents = [self.dict[@"has_upcoming_events"] boolValue];
 }
 
 #pragma mark - Getters

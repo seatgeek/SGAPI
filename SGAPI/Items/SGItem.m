@@ -144,14 +144,30 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     for (NSString *key in self.class.resultFields.allKeys) {
         if (_dict[keys[key]]) {
 
-            // get the property's class, for type enforcement
-            objc_property_t prop = class_getProperty(self.class, key.UTF8String);
-            NSString *attribs = [NSString stringWithUTF8String:property_getAttributes(prop)];
-            NSArray *bits = [attribs componentsSeparatedByString:@"\""];
-            Class requiredType = NSClassFromString(bits[1]);
+            const char * type = property_getAttributes(class_getProperty(self.class, key.UTF8String));
+            NSString * typeString = [NSString stringWithUTF8String:type];
+            NSArray * attributes = [typeString componentsSeparatedByString:@","];
+            NSString * typeAttribute = [attributes objectAtIndex:0];
 
-            [self setValue:[self.class valueFor:_dict[keys[key]] withType:requiredType]
-                  forKey:key];
+            if ([typeAttribute hasPrefix:@"T@"] && [typeAttribute length] > 1) {
+                NSString * typeClassName = [typeAttribute substringWithRange:NSMakeRange(3, [typeAttribute length]-4)];  //turns @"NSDate" into NSDate
+                Class typeClass = NSClassFromString(typeClassName);
+                if (typeClass != nil) {
+                    [self setValue:[self.class valueFor:_dict[keys[key]] withType:typeClass]
+                            forKey:key];
+                }
+#ifdef DEBUG
+                NSAssert(typeClass != nil, @"%@ could not find class with name %@ for property", NSStringFromClass(self.class), typeClassName);
+#endif
+            } else {
+                // the property is a primitive.  Let cocoa handle it for us:
+                /***
+                 Similarly, setValue:forKey: determines the data type required by the appropriate accessor 
+                 or instance variable for the specified key. If the data type is not an object, then the 
+                 value is extracted from the passed object using the appropriate -<type>Value method.
+                 **/
+                [self setValue:_dict[keys[key]] forKey:key];
+            }
         }
     }
 

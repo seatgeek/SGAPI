@@ -18,7 +18,11 @@
             @"type":@"type",
             @"taxonomies":@"taxonomies",
             @"stats":@"stats",
-            @"links":@"links"
+            @"links":@"links",
+            @"generalAdmission":@"general_admission",
+            @"timeTbd":@"time_tbd",
+            @"dateTbd":@"date_tbd"
+
     };
 }
 
@@ -50,10 +54,6 @@
         _visibleUntil = [self.class.utcDateParser dateFromString:self.dict[@"visible_until_utc"]];
         _createdAt = [self.class.utcDateParser dateFromString:self.dict[@"created_at"]];
     }
-
-    _generalAdmission = [self.dict[@"general_admission"] boolValue];
-    _timeTbd = [self.dict[@"time_tbd"] boolValue];
-    _dateTbd = [self.dict[@"date_tbd"] boolValue];
 
     [self setupRelationships];
 }
