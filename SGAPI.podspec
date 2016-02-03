@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SGAPI"
-  s.version      = "1.1.1"
+  s.version      = "1.2.0"
   s.summary      = "An iOS SDK for querying the SeatGeek Platform web service."
   s.homepage     = "http://platform.seatgeek.com"
   s.license      = { :type => "BSD", :file => "LICENSE" }
@@ -9,6 +9,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/seatgeek/SGAPI.git", :tag => "1.1.1" }
   s.source_files = "SGAPI/**/*.{h,m}"
   s.requires_arc = true
-  s.dependency "SGHTTPRequest", '>= 1.3.1'
-  s.dependency "SGImageCache", '>= 2.1.1'
+  s.dependency "SGHTTPRequest", '>= 1.6.0'
 end

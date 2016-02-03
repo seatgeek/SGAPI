@@ -2,12 +2,13 @@
 //  Created by matt on 18/01/14.
 //
 
-#import <SGImageCache/SGCache.h>
+#import <SGHTTPRequest/SGFileCache.h>
 #import "SGItemSet.h"
 #import "SGHTTPRequest.h"
 #import "SGQuery.h"
 #import "SGItem.h"
 #import "SGDataManager.h"
+#import <MGEvents/NSObject+MGEvents.h>
 
 @interface SGItemSet ()
 @property (nonatomic, strong) NSMutableOrderedSet *items;
@@ -172,13 +173,33 @@
 
 #pragma mark - Caching
 
++ (SGFileCache *)cache {
+    static SGFileCache *cache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cache = [SGFileCache cacheFor:NSStringFromClass(self)];
+        cache.maxDiskCacheSizeMB = 0;   // unlimited cache size
+        [cache clearExpiredFiles];
+    });
+    return cache;
+}
+
+- (SGFileCache *)cache {
+    return self.class.cache;
+}
+
 - (void)setCacheKey:(NSString *)cacheKey {
     _cacheKey = cacheKey;
     [self loadCachedContents];
 }
 
 - (NSString *)internalCacheKey {
-    return self.cacheKey.length ? [NSString stringWithFormat:@"%@:%@", self.class, self.cacheKey] : nil;
+    return self.cacheKey.length ? self.cacheKey : nil;
+}
+
+- (NSDate *)cacheExpiryDate {
+    // expire after 1 month.  If it hasn't been used by then just get a fresh copy
+    return [NSDate.date dateByAddingTimeInterval:2592000];
 }
 
 - (void)cacheContents {
@@ -187,18 +208,18 @@
     }
     NSDictionary *cacheDict = @{@"items":self.items, @"lastFetched":self.lastFetched};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cacheDict];
-    [SGCache addData:data forCacheKey:self.internalCacheKey];
+    [self.cache cacheData:data for:self.internalCacheKey expiryDate:self.cacheExpiryDate];
 }
 
 - (BOOL)haveCachedContents {
-    return [SGCache haveFileForCacheKey:self.internalCacheKey];
+    return [self.cache hasCachedDataFor:self.internalCacheKey];
 }
 
 - (void)loadCachedContents {
     if (!self.haveCachedContents) {
         return;
     }
-    NSData *data = [SGCache fileForCacheKey:self.internalCacheKey];
+    NSData *data = [self.cache cachedDataFor:self.internalCacheKey];
     NSDictionary *cachedContents = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     if (![cachedContents isKindOfClass:NSDictionary.class]) {
         return;

@@ -98,6 +98,12 @@
  */
 - (BOOL)shouldCacheOnFetch;
 
+/**
+ * The date for cached items to expire.
+ * Defaults to 1 month.
+ */
+@property (nonatomic, strong, nullable) NSDate *cacheExpiryDate;
+
 #pragma mark - Composite properties
 
 /** @name Composite properties */
