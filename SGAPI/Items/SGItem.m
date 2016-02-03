@@ -77,7 +77,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
         me.fetching = NO;
         me.hasPartialContents = NO;
         me.lastFetched = NSDate.date;
-        if ([self shouldCacheOnFetch]) {
+        if (me.shouldCacheOnFetch) {
             [me cacheContents];
         }
         [me trigger:SGItemFetchSucceeded withContext:me];
