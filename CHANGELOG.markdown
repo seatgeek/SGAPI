@@ -1,3 +1,11 @@
+## 1.2.0
+
+- Added support for WatchOS 2
+- Removed SGImageCache Dependency
+- Added swift nullable hits to some methods
+- Added ability to cache SGItemSet results to disk
+- Miscellaneous bug fixes
+
 ## 1.1.1
 
 - Fixed a bug that could happen with null data
