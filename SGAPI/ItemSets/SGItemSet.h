@@ -198,8 +198,8 @@ request has completed.
 
 #pragma mark - Composite properties
 
-@property (nonatomic, weak) SGItemSet *parentSet;
-@property (nonatomic, weak) SGItem *parentItem;
+@property (nonatomic, weak, nullable) SGItemSet *parentSet;
+@property (nonatomic, weak, nullable) SGItem *parentItem;
 
 #pragma mark - Ignore plz
 
