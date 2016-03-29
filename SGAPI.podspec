@@ -7,8 +7,8 @@ Pod::Spec.new do |s|
   s.author       = "SeatGeek"
   s.watchos.deployment_target = '2.0'
   s.ios.deployment_target = '7.0'
-  s.source       = { :git => "https://github.com/seatgeek/SGAPI.git", :tag => "1.1.1" }
+  s.source       = { :git => "https://github.com/seatgeek/SGAPI.git", :tag => "1.3.0" }
   s.source_files = "SGAPI/**/*.{h,m}"
   s.requires_arc = true
-  s.dependency "SGHTTPRequest", '>= 1.6.0'
+  s.dependency "SGHTTPRequest", '>= 1.7.0'
 end
