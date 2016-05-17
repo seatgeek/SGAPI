@@ -6,7 +6,7 @@
 #define SGItemFetchSucceeded @"SGItemFetchSucceeded"
 #define SGItemFetchFailed @"SGItemFetchFailed"
 
-@class SGItemSet, SGQuery, SGDataManager;
+@class SGItemSet, SGQuery, SGDataManager, SGFileCache;
 
 /**
 * `SGItem` is the abstract model class for result items. The concrete models
@@ -103,6 +103,9 @@
  * Defaults to 1 month.
  */
 @property (nonatomic, strong, nullable) NSDate *cacheExpiryDate;
+
+/// the SGFileCache for this class
++ (SGFileCache *)cache;
 
 #pragma mark - Composite properties
 

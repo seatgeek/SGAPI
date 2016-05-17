@@ -115,14 +115,26 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 }
 
 + (SGFileCache *)cache {
-    static SGFileCache *cache;
+    NSString *cacheName = NSStringFromClass(self);
+
+    static NSMutableArray *configuredCaches;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        cache = [SGFileCache cacheFor:NSStringFromClass(self)];
-        cache.maxDiskCacheSizeMB = 0;   // unlimited cache size
-        [cache clearExpiredFiles];
+        configuredCaches = NSMutableArray.new;
     });
-    return cache;
+
+    SGFileCache *cache;
+
+    @synchronized (SGItem.class) {
+        cache = [SGFileCache cacheFor:cacheName];
+        if (![configuredCaches containsObject:cacheName]) {
+            // only perform cache setup once per cache
+            [configuredCaches addObject:cacheName];
+            cache.maxDiskCacheSizeMB = 0;   // unlimited cache size
+            [cache clearExpiredFiles];
+        }
+        return cache;
+    }
 }
 
 - (SGFileCache *)cache {
