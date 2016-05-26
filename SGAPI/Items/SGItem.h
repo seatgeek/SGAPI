@@ -105,7 +105,7 @@
 @property (nonatomic, strong, nullable) NSDate *cacheExpiryDate;
 
 /// the SGFileCache for this class
-+ (SGFileCache *)cache;
++ (nonnull SGFileCache *)cache;
 
 #pragma mark - Composite properties
 
