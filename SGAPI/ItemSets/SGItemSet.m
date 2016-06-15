@@ -121,7 +121,7 @@
             return;
         }
 
-        NSArray *results = dict[me.resultArrayKey];
+        NSArray *results = [dict valueForKeyPath:me.resultArrayKey];
         if (![results isKindOfClass:NSArray.class]) {
             results = nil;
         }
