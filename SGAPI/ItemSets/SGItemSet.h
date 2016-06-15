@@ -3,12 +3,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SGAPI/SGItem.h>
 
 #define SGItemSetFetchStarted @"SGItemSetFetchStarted"
 #define SGItemSetFetchSucceeded @"SGItemSetFetchSucceeded"
 #define SGItemSetFetchFailed @"SGItemSetFetchFailed"
 
-@class SGQuery, SGItem, SGDataManager;
+@class SGQuery, SGDataManager;
 
 /**
 * `SGItemSet` is the abstract base class for item sets, providing the core
@@ -16,7 +17,7 @@
 * `SGPerformerSet`, and `SGVenueSet` to fetch paginated results.
 */
 
-@interface SGItemSet : NSObject
+@interface SGItemSet : SGItem
 
 #pragma mark - Subclasses implement / override
 
