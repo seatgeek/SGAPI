@@ -22,6 +22,12 @@
 @end
 
 @implementation SGItemSet
+// use the SGItem implementation of all these properties:
+@dynamic query;
+@dynamic parentSet;
+@dynamic parentItem;
+@dynamic dataManager;
+@dynamic lastFetched;
 
 - (id)init {
     self = [super init];
@@ -215,20 +221,21 @@
     return [self.cache hasCachedDataFor:self.internalCacheKey];
 }
 
-- (void)loadCachedContents {
+- (BOOL)loadCachedContents {
     if (!self.haveCachedContents) {
-        return;
+        return NO;
     }
     NSData *data = [self.cache cachedDataFor:self.internalCacheKey];
     NSDictionary *cachedContents = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     if (![cachedContents isKindOfClass:NSDictionary.class]) {
-        return;
+        return NO;
     }
     self.items = [cachedContents[@"items"] mutableCopy];
     self.lastFetched = cachedContents[@"lastFetched"];
     for (SGItem *item in self.items) {
         item.parentSet = self;
     }
+    return YES;
 }
 
 #pragma mark - Setters
