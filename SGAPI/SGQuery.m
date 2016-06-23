@@ -15,7 +15,7 @@ NSMutableDictionary *_globalParams;
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, strong) NSString *query;
 @property (nonatomic, strong) NSMutableDictionary *parameters;
-@property (nonatomic, copy) NSString *filters;
+@property (nonatomic, strong) NSMutableDictionary *filters;
 @end
 
 @implementation SGQuery
@@ -86,7 +86,6 @@ NSMutableDictionary *_globalParams;
 #pragma mark - Query Rebuilding
 
 - (void)setParameter:(NSString *)param value:(id)value {
-    // todo: parse the value into a suitable string
     if (value) {
         self.parameters[param] = value;
     } else {
@@ -96,42 +95,43 @@ NSMutableDictionary *_globalParams;
 }
 
 - (void)addFilter:(NSString *)filter value:(id)value {
-    // todo: parse the value into a suitable string
-
-    if (self.filters.length) {
-        NSString *appendage = [NSString stringWithFormat:@"&%@=%@", filter, value];
-        self.filters = [self.filters stringByAppendingString:appendage];
+    if (value) {
+        self.filters[filter] = value;
     } else {
-        self.filters = [NSString stringWithFormat:@"%@=%@", filter, value];
+        [self.filters removeObjectForKey:filter];
     }
     [self rebuildQuery];
 }
 
-- (void)rebuildQuery {
-    self.query = nil;
-    for (id param in self.class.globalParameters) {
-        [self addParameterToQuery:param value:self.class.globalParameters[param]];
-    }
-    for (id param in self.parameters) {
-        [self addParameterToQuery:param value:self.parameters[param]];
-    }
-    if (self.filters.length) {
-        if (self.query.length) {
-            NSString *appendage = [NSString stringWithFormat:@"&%@", self.filters];
-            self.query = [self.query stringByAppendingString:appendage];
+- (NSArray *)queryItemsForParameters:(NSDictionary *)parameters {
+    NSMutableArray *queryItems = NSMutableArray.new;
+    for (NSString *key in parameters) {
+        id value = parameters[key];
+        if ([value isKindOfClass:NSString.class]) {
+            [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:value]];
+        } else if ([value isKindOfClass:NSArray.class]) {
+            for (id arrayValue in value) {
+                NSString *arrayValueString = [NSString stringWithFormat:@"%@", arrayValue];
+                [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:arrayValueString]];
+            }
         } else {
-            self.query = [self.query stringByAppendingString:self.filters];
+            value = [NSString stringWithFormat:@"%@", value];
+            [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:value]];
         }
     }
+    return queryItems;
 }
 
-- (void)addParameterToQuery:(NSString *)param value:(id)value {
-    if (self.query.length) {
-        NSString *appendage = [NSString stringWithFormat:@"&%@=%@", param, value];
-        self.query = [self.query stringByAppendingString:appendage];
-    } else {
-        self.query = [NSString stringWithFormat:@"%@=%@", param, value];
-    }
+- (void)rebuildQuery {
+    self.query = nil;
+
+    NSURLComponents *components = [NSURLComponents componentsWithURL:self.URL resolvingAgainstBaseURL:NO];
+    NSMutableArray *queryItems = NSMutableArray.array;
+    [queryItems addObjectsFromArray:[self queryItemsForParameters:self.class.globalParameters]];
+    [queryItems addObjectsFromArray:[self queryItemsForParameters:self.parameters]];
+    [queryItems addObjectsFromArray:[self queryItemsForParameters:self.filters]];
+    components.queryItems = queryItems;    
+    self.query = components.query;
 }
 
 #pragma mark - Parameter Setters
@@ -247,6 +247,13 @@ NSMutableDictionary *_globalParams;
         _parameters = @{}.mutableCopy;
     }
     return _parameters;
+}
+
+- (NSMutableDictionary *)filters {
+    if (!_filters) {
+        _filters = @{}.mutableCopy;
+    }
+    return _filters;
 }
 
 + (NSMutableDictionary *)globalParameters {
