@@ -152,6 +152,12 @@ NSMutableDictionary *_globalParams;
     [self setParameter:@"lon" value:@(location.longitude)];
 }
 
+- (void)clearLocation {
+    _location = (CLLocationCoordinate2D){.latitude = 0, .longitude = 0};
+    [self setParameter:@"lat" value:nil];
+    [self setParameter:@"lon" value:nil];
+}
+
 - (void)setRange:(NSString *)range {
     // todo: validate
     _range = range.copy;

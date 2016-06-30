@@ -162,6 +162,11 @@ Apply a keyword search to the query.
 @property (nonatomic, assign) CLLocationCoordinate2D location;
 
 /**
+* Clears the location parameter
+*/
+- (void)clearLocation;
+
+/**
 * Specify a range for location based filters. Accepts miles ("mi") and kilometres
 * ("km"). Default is "30mi".
 */
