@@ -162,6 +162,12 @@ request has completed.
 */
 - (NSUInteger)count;
 
+/**
+ * Returns a total number of the items in the set. Note that this is not the
+ * number of items received so far, but instead the total number of items in all pages.
+ */
+- (NSUInteger)total;
+
 #pragma mark - Caching results
 
 /** @name Caching results */

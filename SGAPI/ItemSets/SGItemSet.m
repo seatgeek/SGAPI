@@ -154,8 +154,8 @@
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            [me doAdditionalProcessingWithServerResponseDict:dict];
             me.meta = metaDict;
+            [me doAdditionalProcessingWithServerResponseDict:dict];
             NSMutableOrderedSet *reallyNewItems;
             if (me.items) {
                 reallyNewItems = newItems.mutableCopy;
@@ -274,6 +274,10 @@
         return 0;
     }
     return (int)ceilf([self.meta[@"total"] floatValue] / [self.meta[@"per_page"] intValue]);
+}
+
+- (int)total {
+    return [self.meta[@"total"] intValue];
 }
 
 #pragma mark - Subscripting
