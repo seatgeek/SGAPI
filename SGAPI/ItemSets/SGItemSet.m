@@ -276,8 +276,8 @@
     return (int)ceilf([self.meta[@"total"] floatValue] / [self.meta[@"per_page"] intValue]);
 }
 
-- (int)total {
-    return [self.meta[@"total"] intValue];
+- (NSUInteger)total {
+    return [self.meta[@"total"] unsignedIntegerValue];
 }
 
 #pragma mark - Subscripting
