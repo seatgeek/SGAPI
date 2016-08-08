@@ -12,6 +12,7 @@
 static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 @interface SGItem ()
+@property (nullable, nonatomic, strong) NSString *ID;
 @property (nonatomic, assign) BOOL fetching;
 @property (nonatomic, assign) BOOL needsRefresh;
 @property (nonatomic, assign) BOOL hasPartialContents;
