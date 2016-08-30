@@ -31,6 +31,15 @@ in your AppDelegate's `application:didFinishLaunchingWithOptions:`
 + (void)setClientId:(NSString *)clientId;
 
 /**
+ Some SeatGeek Platform endpoints require an
+ [API key](https://seatgeek.com/account/develop). Set `clientSecret` to your client secret
+ in your AppDelegate's `application:didFinishLaunchingWithOptions:`
+
+ SGQuery.clientSecret = @"my_client_secret";
+ */
++ (void)setClientSecret:(NSString *)clientSecret;
+
+/**
 An optional `aid` value to append to all queries. Set this value in your
 AppDelegate's `application:didFinishLaunchingWithOptions:`
 

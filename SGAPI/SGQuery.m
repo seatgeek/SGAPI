@@ -188,6 +188,10 @@ NSMutableDictionary *_globalParams;
     self.globalParameters[@"client_id"] = clientId;
 }
 
++ (void)setClientSecret:(NSString *)clientSecret {
+    self.globalParameters[@"client_secret"] = clientSecret;
+}
+
 + (void)setAid:(NSString *)aid {
     self.globalParameters[@"aid"] = aid;
 }
