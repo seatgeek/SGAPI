@@ -1,3 +1,13 @@
+## 1.3.0
+
+- Added support for setting client secret
+- Improved caching system
+- Improved compatibility with App Extensions
+- Reworked query parameter and filter building to use NSURLQueryItem, bumped min deployment target to iOS 8
+- Add ability to clear location on queries
+- Added a way to get the total number of items in an SGItemSet
+- Added some nullability hints for swift
+
 ## 1.2.0
 
 - Added support for WatchOS 2
