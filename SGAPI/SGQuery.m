@@ -14,6 +14,8 @@ NSMutableDictionary *_globalParams;
 @property (nonatomic, strong) NSString *baseUrl;
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, strong) NSString *query;
+/// parameters that were baked in to the path at creation time
+@property (nonatomic, strong) NSMutableDictionary *bakedParameters;
 @property (nonatomic, strong) NSMutableDictionary *parameters;
 @property (nonatomic, strong) NSMutableDictionary *filters;
 @end
@@ -88,8 +90,12 @@ NSMutableDictionary *_globalParams;
 - (void)setParameter:(NSString *)param value:(id)value {
     if (value) {
         self.parameters[param] = value;
+        if (self.bakedParameters[param]) {
+            [self.bakedParameters removeObjectForKey:param];
+        }
     } else {
         [self.parameters removeObjectForKey:param];
+        [self.bakedParameters removeObjectForKey:param];
     }
     [self rebuildQuery];
 }
@@ -97,8 +103,12 @@ NSMutableDictionary *_globalParams;
 - (void)addFilter:(NSString *)filter value:(id)value {
     if (value) {
         self.filters[filter] = value;
+        if (self.bakedParameters[filter]) {
+            [self.bakedParameters removeObjectForKey:filter];
+        }
     } else {
         [self.filters removeObjectForKey:filter];
+        [self.bakedParameters removeObjectForKey:filter];
     }
     [self rebuildQuery];
 }
@@ -127,6 +137,7 @@ NSMutableDictionary *_globalParams;
 
     NSURLComponents *components = [NSURLComponents componentsWithURL:self.URL resolvingAgainstBaseURL:NO];
     NSMutableArray *queryItems = NSMutableArray.array;
+    [queryItems addObjectsFromArray:[self queryItemsForParameters:self.bakedParameters]];
     [queryItems addObjectsFromArray:[self queryItemsForParameters:self.class.globalParameters]];
     [queryItems addObjectsFromArray:[self queryItemsForParameters:self.parameters]];
     [queryItems addObjectsFromArray:[self queryItemsForParameters:self.filters]];
@@ -135,6 +146,24 @@ NSMutableDictionary *_globalParams;
 }
 
 #pragma mark - Parameter Setters
+
+- (void)setPath:(NSString *)path {
+    _path = path;
+
+    [self.bakedParameters removeAllObjects];
+    if ([path rangeOfString:@"?"].location == NSNotFound) {
+        return;
+    }
+    NSString *query = [path componentsSeparatedByString:@"?"].lastObject;
+    NSArray *queryComponents = [query componentsSeparatedByString:@"&"];
+    for (NSString *component in queryComponents) {
+        NSArray *paramValuePair = [component componentsSeparatedByString:@"="];
+        if (paramValuePair.count != 2) {
+            continue;
+        }
+        self.bakedParameters[paramValuePair.firstObject] = paramValuePair.lastObject;
+    }
+}
 
 - (void)setPerPage:(NSUInteger)perPage {
     _perPage = perPage;
@@ -257,6 +286,13 @@ NSMutableDictionary *_globalParams;
         _parameters = @{}.mutableCopy;
     }
     return _parameters;
+}
+
+- (NSMutableDictionary *)bakedParameters {
+    if (!_bakedParameters) {
+        _bakedParameters = @{}.mutableCopy;
+    }
+    return _bakedParameters;
 }
 
 - (NSMutableDictionary *)filters {
