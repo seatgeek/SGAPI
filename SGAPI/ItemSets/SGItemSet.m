@@ -132,7 +132,7 @@
             results = nil;
         }
 
-        NSDictionary *metaDict = dict[@"meta"];
+        NSDictionary *metaDict = dict[@"meta"] ?: me.meta;
         if (!metaDict) {
             // assume this endpoint cannot be paginated.
             metaDict = @{@"per_page" : @(me.query.perPage ?: results.count),
