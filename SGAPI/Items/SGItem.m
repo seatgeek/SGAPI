@@ -69,7 +69,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     __weakSelf me = self;
     req.onSuccess = ^(SGHTTPRequest *_req) {
         NSDictionary *responseDict = [SGJSONSerialization JSONObjectWithData:_req.responseData];
-        NSDictionary *itemDict = responseDict[self.resultItemKey];
+        NSDictionary *itemDict = [responseDict valueForKeyPath:self.resultItemKey];
         if (!itemDict) {
             [me trigger:SGItemFetchFailed];
         }
@@ -185,8 +185,8 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
     NSDictionary *keys = self.class.resultFields;
 
     for (NSString *key in self.class.resultFields.allKeys) {
-        if (_dict[keys[key]]) {
-
+        id value = [_dict valueForKeyPath:keys[key]];
+        if (value) {
             const char * type = property_getAttributes(class_getProperty(self.class, key.UTF8String));
             NSString * typeString = [NSString stringWithUTF8String:type];
             NSArray * attributes = [typeString componentsSeparatedByString:@","];
@@ -196,7 +196,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
                 NSString * typeClassName = [typeAttribute substringWithRange:NSMakeRange(3, [typeAttribute length]-4)];  //turns @"NSDate" into NSDate
                 Class typeClass = NSClassFromString(typeClassName);
                 if (typeClass != nil) {
-                    [self setValue:[self.class valueFor:_dict[keys[key]] withType:typeClass]
+                    [self setValue:[self.class valueFor:value withType:typeClass]
                             forKey:key];
                 }
 #ifdef DEBUG
@@ -209,7 +209,7 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
                  or instance variable for the specified key. If the data type is not an object, then the 
                  value is extracted from the passed object using the appropriate -<type>Value method.
                  **/
-                [self setValue:_dict[keys[key]] forKey:key];
+                [self setValue:value forKey:key];
             }
         }
     }
