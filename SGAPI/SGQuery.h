@@ -223,6 +223,7 @@ Add a results filter. Filters are stacked, and the same filters can be applied m
 + (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl;
 + (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl path:(NSString *)path;
 + (NSMutableDictionary *)globalParameters;
++ (NSString *)baseURL;
 + (void)setBaseURL:(NSString *)url;
 - (void)setPath:(NSString *)path;
 - (void)rebuildQuery;

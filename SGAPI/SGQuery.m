@@ -23,7 +23,11 @@ NSMutableDictionary *_globalParams;
 @implementation SGQuery
 
 + (void)initialize {
-    self.baseURL = SGAPI_BASEURL;
+    self.baseURL = self.defaultBaseURL;
+}
+
++ (NSString *)defaultBaseURL {
+    return SGAPI_BASEURL;
 }
 
 + (SGQuery *)queryWithPath:(NSString *)path {
@@ -227,6 +231,10 @@ NSMutableDictionary *_globalParams;
 
 + (void)setRid:(NSString *)rid {
     self.globalParameters[@"rid"] = rid;
+}
+
++ (NSString *)baseURL {
+    return _gBaseURL;
 }
 
 + (void)setBaseURL:(NSString *)url {
