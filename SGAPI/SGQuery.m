@@ -42,8 +42,11 @@ NSMutableDictionary *_globalParams;
     SGQuery *query = self.new;
     query.baseUrl = baseUrl;
     query.path = path;
-    [query rebuildQuery];
-    return query;
+    if (query.URL) {
+        [query rebuildQuery];
+        return query;
+    }
+    return nil;
 }
 
 #pragma mark - Events Query Factories
