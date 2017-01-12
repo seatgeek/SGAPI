@@ -138,6 +138,9 @@ NSMutableDictionary *_globalParams;
 
 - (void)rebuildQuery {
     self.query = nil;
+    if (!self.URL) {
+        return;
+    }
 
     NSURLComponents *components = [NSURLComponents componentsWithURL:self.URL resolvingAgainstBaseURL:NO];
     NSMutableArray *queryItems = NSMutableArray.array;
