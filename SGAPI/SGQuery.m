@@ -42,11 +42,8 @@ NSMutableDictionary *_globalParams;
     SGQuery *query = self.new;
     query.baseUrl = baseUrl;
     query.path = path;
-    if (query.URL) {
-        [query rebuildQuery];
-        return query;
-    }
-    return nil;
+    [query rebuildQuery];
+    return query;
 }
 
 #pragma mark - Events Query Factories
@@ -141,6 +138,9 @@ NSMutableDictionary *_globalParams;
 
 - (void)rebuildQuery {
     self.query = nil;
+    if (!self.URL) {
+        return;
+    }
 
     NSURLComponents *components = [NSURLComponents componentsWithURL:self.URL resolvingAgainstBaseURL:NO];
     NSMutableArray *queryItems = NSMutableArray.array;
