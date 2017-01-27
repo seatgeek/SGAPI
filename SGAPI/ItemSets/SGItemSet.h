@@ -43,6 +43,15 @@ An <SGQuery> instance for defining the parameters and filters of the API query.
 */
 @property (nullable, nonatomic, strong) SGQuery *query;
 
+/**
+An array of <SGQuery> instances for
+
+TODO finish this comment
+
+must be in order that you desire the items to appear
+*/
+@property (nullable, nonatomic, strong) NSArray<SGQuery *> *queries;
+
 #pragma mark - State change callbacks
 
 /** @name State change callbacks */

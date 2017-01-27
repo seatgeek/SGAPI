@@ -12,17 +12,18 @@
 
 @interface SGItemSet ()
 @property (nonatomic, strong) NSMutableOrderedSet *items;
-@property (nonatomic, strong) NSDictionary *meta;
+@property (nonatomic, strong) NSDictionary *metaForQuery;
 @property (nonatomic, assign) BOOL fetching;
-@property (nonatomic, assign) int lastFetchedPage;
+@property (nonatomic, strong) NSMutableArray<SGQuery *> *queriesToFetch;
+@property (nonatomic, assign) int lastFetchedPageForQuery;
 @property (nonatomic, strong) SGHTTPRequest *request;
 @property (nonatomic, strong) NSDate *lastFetched;
 @property (nonatomic, assign) BOOL needsRefresh;
 @end
 
 @implementation SGItemSet
+@synthesize queries = _queries;
 // use the SGItem implementation of all these properties:
-@dynamic query;
 @dynamic parentSet;
 @dynamic parentItem;
 @dynamic dataManager;
@@ -52,15 +53,27 @@
 
 - (void)reset {
     self.items = nil;
-    self.lastFetchedPage = 0;
-    self.meta = nil;
     self.lastFetched = nil;
+    self.queriesToFetch = self.queries.mutableCopy;
+    self.lastFetchedPageForQuery = 0;
+    self.metaForQuery = nil;
     [self cancelFetch];
 }
 
 - (void)fetchNextPage {
-    if (!self.lastPageAlreadyFetched) {
-        [self fetchPage:self.lastFetchedPage + 1];
+    if (self.lastPageAlreadyFetchedForQuery) {
+        [self fetchPageFromNextQuery];
+    } else {
+        [self fetchPage:self.lastFetchedPageForQuery + 1];
+    }
+}
+
+- (void)fetchPageFromNextQuery {
+    if (self.queriesToFetch.count > 1) {  // > 1 because we haven't yet removed the previous query
+        [self.queriesToFetch removeObjectAtIndex:0];
+        self.lastFetchedPageForQuery = 0;
+        self.metaForQuery = nil;
+        [self fetchPage:self.lastFetchedPageForQuery + 1];
     }
 }
 
@@ -70,9 +83,9 @@
     }
     self.fetching = YES;
 
-    self.query.page = page;
+    self.queriesToFetch.firstObject.page = page;
 
-    SGHTTPRequest *req = [self.query requestWithMethod:SGHTTPRequestMethodGet];
+    SGHTTPRequest *req = [self.queriesToFetch.firstObject requestWithMethod:SGHTTPRequestMethodGet];
     req.showActivityIndicator = self.allowStatusBarSpinner;
 
     if (SGQuery.consoleLogging) {
@@ -133,7 +146,7 @@
         NSDictionary *metaDict = dict[@"meta"] ?: me.meta;
         if (!metaDict) {
             // assume this endpoint cannot be paginated.
-            metaDict = @{@"per_page" : @(me.query.perPage ?: results.count),
+            metaDict = @{@"per_page" : @(me.queriesToFetch.firstObject.perPage ?: results.count),
                          @"total" : @(results.count),
                          @"page" : @(1)}.copy;
         }
@@ -152,7 +165,7 @@
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            me.meta = metaDict;
+            me.metaForQuery = metaDict;
             [me doAdditionalProcessingWithServerResponseDict:dict];
             NSMutableOrderedSet *reallyNewItems;
             if (me.items) {
@@ -170,7 +183,13 @@
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
-            [me trigger:SGItemSetFetchSucceeded];
+            if (me.lastPageAlreadyFetchedForQuery && self.queriesToFetch.count > 1) {
+                // If we fetched the last page of one query, automatically chain the first page of the next
+                [me fetchPageFromNextQuery];
+            } else {
+                // Don't trigger this unless we're done fetching, otherwise it might refresh unnecessarily
+                [me trigger:SGItemSetFetchSucceeded];
+            }
         });
     });
 }
@@ -238,9 +257,23 @@
 
 #pragma mark - Setters
 
+- (void)setQuery:(SGQuery *)query {
+    self.queries = @[query];
+}
+
+- (void)setQueries:(NSArray<SGQuery *> *)queries {
+    _queries = queries;
+}
+
+// needed by some subclasses
 - (void)setMeta:(NSDictionary *)meta {
-    _meta = meta;
-    self.lastFetchedPage = [meta[@"page"] intValue];
+    //TODO assert if multiple queries
+    self.metaForQuery = meta;
+}
+
+- (void)setMetaForQuery:(NSDictionary *)metaForQuery {
+    _metaForQuery = metaForQuery;
+    self.lastFetchedPageForQuery = [metaForQuery[@"page"] intValue];
 }
 
 - (void)setNeedsRefresh {
@@ -249,33 +282,54 @@
 
 #pragma mark - Getters
 
+- (SGQuery *)query {
+    return self.queries.firstObject;
+}
+
+- (NSArray<SGQuery *> *)queries {
+    return _queries;
+}
+
+// needed by some subclasses
 - (BOOL)lastPageAlreadyFetched {
+    //TODO assert if multiple queries
+    return self.lastPageAlreadyFetchedForQuery;
+}
+
+- (BOOL)lastPageAlreadyFetchedForQuery {
     if (self.items && self.items.count == 0) {
         return YES;
     }
-    if (!self.meta) {
+    if (!self.metaForQuery) {
         return NO;
     }
-    return self.lastFetchedPage == self.totalPages || !self.totalPages;
+    return self.lastFetchedPageForQuery == self.totalPagesForQuery || !self.totalPagesForQuery;
 }
 
 - (BOOL)fetching {
     return _fetching;
 }
 
+// needed by some subclasses
 - (int)lastFetchedPage {
-    return _lastFetchedPage;
+    //assert if multiple queries
+    return self.lastFetchedPageForQuery;
 }
 
-- (int)totalPages {
-    if (![self.meta[@"per_page"] intValue]) {
+- (int)lastFetchedPageForQuery {
+    return _lastFetchedPageForQuery;
+}
+
+- (int)totalPagesForQuery {
+    if (![self.metaForQuery[@"per_page"] intValue]) {
         return 0;
     }
-    return (int)ceilf([self.meta[@"total"] floatValue] / [self.meta[@"per_page"] intValue]);
+    return (int)ceilf([self.metaForQuery[@"total"] floatValue] / [self.metaForQuery[@"per_page"] intValue]);
 }
 
 - (NSUInteger)total {
-    return [self.meta[@"total"] unsignedIntegerValue];
+    //assert if multiple queries
+    return [self.metaForQuery[@"total"] unsignedIntegerValue];
 }
 
 #pragma mark - Subscripting
