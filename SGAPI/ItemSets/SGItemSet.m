@@ -16,7 +16,6 @@
 @property (nonatomic, assign) BOOL fetching;
 @property (nonatomic, assign) int lastFetchedPage;
 @property (nonatomic, strong) SGHTTPRequest *request;
-@property (nonatomic, strong) NSDictionary *lastResponseDict;
 @property (nonatomic, strong) NSDate *lastFetched;
 @property (nonatomic, assign) BOOL needsRefresh;
 @end
@@ -115,7 +114,6 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSError *error = nil;
         NSDictionary *dict = [SGJSONSerialization JSONObjectWithData:data error:&error logURL:url];
-        me.lastResponseDict = dict;
 
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
