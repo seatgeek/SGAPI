@@ -170,7 +170,7 @@
             if (me.onPageLoaded) {
                 me.onPageLoaded(reallyNewItems);
             }
-            [me trigger:SGItemSetFetchSucceeded withContext:reallyNewItems];
+            [me trigger:SGItemSetFetchSucceeded];
         });
     });
 }

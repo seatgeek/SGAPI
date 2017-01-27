@@ -88,7 +88,7 @@
     self.resultItems = itemSet.array;
 
     __weakSelf me = self;
-    [self when:itemSet does:SGItemSetFetchSucceeded doWithContext:^(NSOrderedSet *newItems) {
+    [self when:itemSet does:SGItemSetFetchSucceeded do:^() {
         me.lastRefreshFailed = NO;
         me.resultItems = me.itemSet.array;
     }];
