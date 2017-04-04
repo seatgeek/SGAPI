@@ -232,6 +232,10 @@ NSMutableDictionary *_globalParams;
     self.globalParameters[@"aid"] = aid;
 }
 
++ (void)setPid:(NSString *)pid {
+    self.globalParameters[@"pid"] = pid;
+}
+
 + (void)setRid:(NSString *)rid {
     self.globalParameters[@"rid"] = rid;
 }

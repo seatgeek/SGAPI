@@ -48,6 +48,14 @@ AppDelegate's `application:didFinishLaunchingWithOptions:`
 + (void)setAid:(NSString *)aid;
 
 /**
+ An optional `pid` value to append to all queries. Set this value in your
+ AppDelegate's `application:didFinishLaunchingWithOptions:`
+
+ SGQuery.pid = @"my_pid";
+ */
++ (void)setPid:(NSString *)pid;
+
+/**
 An optional `rid` value to append to all queries. Set this value in your
 AppDelegate's `application:didFinishLaunchingWithOptions:`
 
