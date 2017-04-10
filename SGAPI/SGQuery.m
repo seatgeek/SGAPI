@@ -3,7 +3,6 @@
 //
 
 #import "SGQuery.h"
-#import "NSString+URLEncode.h"
 #import "NSDate+ISO8601.h"
 
 NSString *_gBaseURL;
@@ -212,12 +211,11 @@ NSMutableDictionary *_globalParams;
 
 - (void)setSearch:(NSString *)search {
     _search = search;
-    search = [[search componentsSeparatedByCharactersInSet:NSCharacterSet.symbolCharacterSet]
-          componentsJoinedByString:@" "];
+
     search = [[search componentsSeparatedByCharactersInSet:NSCharacterSet
-          .punctuationCharacterSet] componentsJoinedByString:@" "];
+               .punctuationCharacterSet] componentsJoinedByString:@" "];
     search = [search stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
-    [self setParameter:@"q" value:search.URLEncodedString];
+    [self setParameter:@"q" value:search];
 }
 
 + (void)setClientId:(NSString *)clientId {
