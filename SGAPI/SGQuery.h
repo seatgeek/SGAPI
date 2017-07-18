@@ -5,7 +5,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <SGHTTPRequest/SGHTTPRequest.h>
 
-#define SGAPI_BASEURL @"https://api.seatgeek.com/2"
+#define SGAPI_BASEFORMAT @"https://api.%@/2"
+#define SGAPI_BASEDOMAIN @"seatgeek.com"
 
 #ifndef __weakSelf
 #define __weakSelf __weak typeof(self)
@@ -231,6 +232,7 @@ Add a results filter. Filters are stacked, and the same filters can be applied m
 + (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl;
 + (SGQuery *)queryWithBaseUrl:(NSString *)baseUrl path:(NSString *)path;
 + (NSMutableDictionary *)globalParameters;
++ (NSString *)defaultBaseDomain;
 + (NSString *)baseURL;
 + (void)setBaseURL:(NSString *)url;
 - (void)setPath:(NSString *)path;
