@@ -47,6 +47,15 @@ static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 #pragma mark - Fetching and caching
 
+- (void)fetchItemAndChildrenIfNeeded {
+    if (self.needsRefresh && !self.fetching) {
+        [self fetch];
+    }
+    for (SGItem *child in self.childItems) {
+        [child fetchItemAndChildrenIfNeeded];
+    }
+}
+
 - (void)fetch {
     if (self.fetching) {
         return;

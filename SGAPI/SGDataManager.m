@@ -38,19 +38,7 @@
 
     // need to refresh any individual items?
     for (SGItem *item in self.itemSet.orderedSet) {
-        if (item.needsRefresh && !item.fetching) {
-            [item fetch];
-        }
-        [self fetchChildrenOf:item];
-    }
-}
-
-- (void)fetchChildrenOf:(SGItem *)item {
-    for (SGItem *child in item.childItems) {
-        if (child.needsRefresh && !child.fetching) {
-            [child fetch];
-        }
-        [self fetchChildrenOf:child];
+        [item fetchItemAndChildrenIfNeeded];
     }
 }
 
