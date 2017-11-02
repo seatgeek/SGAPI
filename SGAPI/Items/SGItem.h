@@ -62,6 +62,13 @@
 - (void)fetch;
 
 /**
+ * Calls `fetch` on the item and recursively on all of its child items.
+ * If one of these items is already <fetching> or does not <needsRefresh>,
+ * then its `fetch` will do nothing.
+ */
+- (void)fetchItemAndChildrenIfNeeded;
+
+/**
 * Returns YES if a fetch is in progress.
 */
 - (BOOL)fetching;
