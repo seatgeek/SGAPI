@@ -211,10 +211,6 @@ NSMutableDictionary *_globalParams;
 
 - (void)setSearch:(NSString *)search {
     _search = search;
-
-    search = [[search componentsSeparatedByCharactersInSet:NSCharacterSet
-               .punctuationCharacterSet] componentsJoinedByString:@" "];
-    search = [search stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
     [self setParameter:@"q" value:search];
 }
 
