@@ -12,7 +12,7 @@ NSMutableDictionary *_globalParams;
 @interface SGQuery ()
 @property (nonatomic, strong) NSString *baseUrl;
 @property (nonatomic, strong) NSString *path;
-@property (nonatomic, strong) NSString *query;
+@property (nonatomic, strong) NSArray *queryItems;
 /// parameters that were baked in to the path at creation time
 @property (nonatomic, strong) NSMutableDictionary *bakedParameters;
 @property (nonatomic, strong) NSMutableDictionary *parameters;
@@ -120,35 +120,35 @@ NSMutableDictionary *_globalParams;
     NSMutableArray *queryItems = NSMutableArray.new;
     for (NSString *key in parameters) {
         id value = parameters[key];
-        if ([value isKindOfClass:NSString.class]) {
-            [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:value]];
-        } else if ([value isKindOfClass:NSArray.class]) {
+        if ([value isKindOfClass:NSArray.class]) {
             for (id arrayValue in value) {
-                NSString *arrayValueString = [NSString stringWithFormat:@"%@", arrayValue];
+                NSString *arrayValueString = [self queryItemValueAsString:arrayValue];
                 [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:arrayValueString]];
             }
         } else {
-            value = [NSString stringWithFormat:@"%@", value];
+            value = [self queryItemValueAsString:value];
             [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:value]];
         }
     }
     return queryItems;
 }
 
+- (NSString *)queryItemValueAsString:(id)value {
+    return [value isKindOfClass:NSString.class] ? value : [NSString stringWithFormat:@"%@", value];
+}
+
 - (void)rebuildQuery {
-    self.query = nil;
+    self.queryItems = @[];
     if (!self.URL) {
         return;
     }
 
-    NSURLComponents *components = [NSURLComponents componentsWithURL:self.URL resolvingAgainstBaseURL:NO];
     NSMutableArray *queryItems = NSMutableArray.array;
     [queryItems addObjectsFromArray:[self queryItemsForParameters:self.bakedParameters]];
     [queryItems addObjectsFromArray:[self queryItemsForParameters:self.class.globalParameters]];
     [queryItems addObjectsFromArray:[self queryItemsForParameters:self.parameters]];
     [queryItems addObjectsFromArray:[self queryItemsForParameters:self.filters]];
-    components.queryItems = queryItems;    
-    self.query = components.query;
+    self.queryItems = queryItems.copy;
 }
 
 #pragma mark - Parameter Setters
@@ -259,7 +259,7 @@ NSMutableDictionary *_globalParams;
     NSString *path = self.path ?: @"";
     NSString *url = [baseUrl stringByAppendingString:path];
     NSURLComponents *bits = [NSURLComponents componentsWithString:url];
-    bits.query = self.query;
+    bits.queryItems = self.queryItems;
     return bits.URL;
 }
 
