@@ -77,7 +77,7 @@ request has completed.
  [self showLoadingSpinner];
  };
  */
-@property (nullable, nonatomic, copy) void (^onPageLoadRetry)();
+@property (nullable, nonatomic, copy) void (^onPageLoadRetry)(void);
 
 #pragma mark - Fetching results
 
