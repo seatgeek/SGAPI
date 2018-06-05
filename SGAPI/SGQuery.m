@@ -22,11 +22,15 @@ NSMutableDictionary *_globalParams;
 @implementation SGQuery
 
 + (void)initialize {
-    self.baseURL = [NSString stringWithFormat:SGAPI_BASEFORMAT, self.defaultBaseDomain];
+    self.baseURL = [NSString stringWithFormat:self.baseFormat, self.defaultBaseDomain];
 }
 
 + (NSString *)defaultBaseDomain {
     return SGAPI_BASEDOMAIN;
+}
+
++ (NSString *)baseFormat {
+    return SGAPI_BASEFORMAT;
 }
 
 + (SGQuery *)queryWithPath:(NSString *)path {
