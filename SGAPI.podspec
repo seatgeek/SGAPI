@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => "BSD", :file => "LICENSE" }
   s.author       = "SeatGeek"
   s.watchos.deployment_target = '2.0'
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
   s.source       = { :git => "https://github.com/seatgeek/SGAPI.git", :tag => "1.3.1" }
   s.source_files = "SGAPI/**/*.{h,m}"
   s.requires_arc = true
