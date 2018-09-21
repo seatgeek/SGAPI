@@ -264,7 +264,7 @@ NSMutableDictionary *_globalParams;
     NSString *url = [baseUrl stringByAppendingString:path];
     NSURLComponents *bits = [NSURLComponents componentsWithString:url];
     bits.queryItems = self.queryItems;
-    return bits.URL;
+    return bits.URL ?: NSURL.new;
 }
 
 - (SGHTTPRequest *)requestWithMethod:(SGHTTPRequestMethod)method {
