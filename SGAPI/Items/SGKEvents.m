@@ -2,11 +2,11 @@
 //  Created by matt on 7/01/13.
 //
 
-#import "SGEvent.h"
+#import "SGKEvents.h"
 #import "SGVenue.h"
 #import "SGPerformer.h"
 
-@implementation SGEvent
+@implementation SGKEvents
 
 + (NSDictionary *)resultFields {
     return @{

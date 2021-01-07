@@ -52,7 +52,7 @@ A block assigned to `onPageLoaded` will be called after each result page
 request has completed.
 
     events.onPageLoaded = ^(NSOrderedSet *results) {
-        for (SGEvent *event in results) {
+        for (SGKEvents *event in results) {
             NSLog(@"event: %@", event.title);
         }
     };

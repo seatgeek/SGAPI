@@ -7,14 +7,14 @@
 @class SGVenue, SGPerformer;
 
 /**
-* The `SGEvent` model wraps individual item results from the
+* The `SGKEvents` model wraps individual item results from the
 * [/events](http://platform.seatgeek.com/#events) and
 * [/recommendations](http://platform.seatgeek.com/#recommendations) endpoints.
-* `SGEvent` extends from <SGItem>, which contains properties common to all item
+* `SGKEvents` extends from <SGItem>, which contains properties common to all item
 * types.
 */
 
-@interface SGEvent : SGItem
+@interface SGKEvents : SGItem
 
 #pragma mark - Relationships
 

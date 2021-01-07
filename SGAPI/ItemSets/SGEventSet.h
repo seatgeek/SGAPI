@@ -4,10 +4,10 @@
 
 #import "SGItemSet.h"
 #import "SGQuery.h"
-#import "SGEvent.h"
+#import "SGKEvents.h"
 
 /**
-`SGEventSet` provides paginated results of `SGEvent` items by quering the
+`SGEventSet` provides paginated results of `SGKEvents` items by quering the
 [/events](http://platform.seatgeek.com/#events) and
 [/recommendations](http://platform.seatgeek.com/#recommendations) endpoints. `SGEventSet` extends from <SGItemSet>, which provides the base result
 fetching and pagination interface.
@@ -16,7 +16,7 @@ fetching and pagination interface.
     events.query.search = @"new york mets";
 
     events.onPageLoaded = ^(NSOrderedSet *results) {
-        for (SGEvent *event in results) {
+        for (SGKEvents *event in results) {
             NSLog(@"event: %@", event.title);
         }
     };

@@ -40,8 +40,8 @@
 
 - (id)itemForDict:(NSDictionary *)dict {
     return dict[@"event"]
-          ? [SGEvent itemForDict:dict[@"event"]]
-          : [SGEvent itemForDict:dict];
+          ? [SGKEvents itemForDict:dict[@"event"]]
+          : [SGKEvents itemForDict:dict];
 }
 
 @end

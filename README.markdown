@@ -11,7 +11,7 @@ pod 'SGAPI'
 
 ### Example Usage
 
-`SGAPI` provides model classes `SGEvent`, `SGPerformer`, `SGVenue`, and item set 
+`SGAPI` provides model classes `SGKEvents`, `SGPerformer`, `SGVenue`, and item set 
 classes `SGEventSet`, `SGPerformerSet`, `SGVenueSet` for paginated fetching.
 
 ```objc
@@ -20,7 +20,7 @@ classes `SGEventSet`, `SGPerformerSet`, `SGVenueSet` for paginated fetching.
 
 ### Fetching Events 
 
-Create `SGEventSet` instances to fetch paginated `SGEvent` results. See the 
+Create `SGEventSet` instances to fetch paginated `SGKEvents` results. See the 
 [SeatGeek Platform docs](http://platform.seatgeek.com/#events) for available query parameters.
 
 ```objc
@@ -35,7 +35,7 @@ block property is called when a request fails.
    
 ```objc
 events.onPageLoaded = ^(NSOrderedSet *results) {
-    for (SGEvent *event in results) {
+    for (SGKEvents *event in results) {
         NSLog(@"event: %@", event.title);
     }
 };
@@ -114,13 +114,13 @@ if (events.count >= 3) {
     NSLog(@"third event: %@", [events[2] title]);
 }
 
-// iterate over an NSArray of SGEvents in the set
-for (SGEvent *event in events.array) {
+// iterate over an NSArray of SGKEvents in the set
+for (SGKEvents *event in events.array) {
     NSLog(@"event: %@", event.title);
 }
 
-// iterate over an NSOrderedSet of SGEvents in the set
-for (SGEvent *event in events.orderedSet) {
+// iterate over an NSOrderedSet of SGKEvents in the set
+for (SGKEvents *event in events.orderedSet) {
     NSLog(@"event: %@", event.title);
 }
 ```
