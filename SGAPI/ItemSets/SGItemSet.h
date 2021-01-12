@@ -13,7 +13,7 @@
 
 /**
 * `SGItemSet` is the abstract base class for item sets, providing the core
-* request handling and pagination. Create instances of `SGEventSet`,
+* request handling and pagination. Create instances of `SGKEventSet`,
 * `SGPerformerSet`, and `SGVenueSet` to fetch paginated results.
 */
 
@@ -37,7 +37,7 @@
 /**
 An <SGQuery> instance for defining the parameters and filters of the API query.
 
-    SGEventSet *events = SGEventSet.eventsQuery;
+    SGKEventSet *events = SGKEventSet.eventsQuery;
     events.query.search = @"new york mets";
     events.query.perPage = 30;
 */
@@ -52,7 +52,7 @@ A block assigned to `onPageLoaded` will be called after each result page
 request has completed.
 
     events.onPageLoaded = ^(NSOrderedSet *results) {
-        for (SGKEvents *event in results) {
+        for (SGKEvent *event in results) {
             NSLog(@"event: %@", event.title);
         }
     };

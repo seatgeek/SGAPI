@@ -2,36 +2,36 @@
 //  Created by matt on 18/01/14.
 //
 
-#import "SGEventSet.h"
+#import "SGKEventSet.h"
 #import "SGPerformer.h"
 #import "SGVenue.h"
 
-@implementation SGEventSet
+@implementation SGKEventSet
 
 #pragma mark - Set Factories
 
 + (instancetype)eventsSet {
-    SGEventSet *events = self.new;
+    SGKEventSet *events = self.new;
     events.query = SGQuery.eventsQuery;
     events.resultArrayKey = @"events";
     return events;
 }
 
 + (instancetype)recommendationsSet {
-    SGEventSet *events = self.new;
+    SGKEventSet *events = self.new;
     events.query = SGQuery.recommendationsQuery;
     events.resultArrayKey = @"recommendations";
     return events;
 }
 
 + (instancetype)setForVenue:(SGVenue *)venue {
-    SGEventSet *events = self.eventsSet;
+    SGKEventSet *events = self.eventsSet;
     [events.query addFilter:@"venue.id" value:venue.ID];
     return events;
 }
 
 + (instancetype)setForPerformer:(SGPerformer *)performer {
-    SGEventSet *events = self.eventsSet;
+    SGKEventSet *events = self.eventsSet;
     [events.query addFilter:@"performers.id" value:performer.ID];
     return events;
 }
@@ -40,8 +40,8 @@
 
 - (id)itemForDict:(NSDictionary *)dict {
     return dict[@"event"]
-          ? [SGKEvents itemForDict:dict[@"event"]]
-          : [SGKEvents itemForDict:dict];
+          ? [SGKEvent itemForDict:dict[@"event"]]
+          : [SGKEvent itemForDict:dict];
 }
 
 @end

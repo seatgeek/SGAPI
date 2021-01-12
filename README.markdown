@@ -11,8 +11,8 @@ pod 'SGAPI'
 
 ### Example Usage
 
-`SGAPI` provides model classes `SGKEvents`, `SGPerformer`, `SGVenue`, and item set 
-classes `SGEventSet`, `SGPerformerSet`, `SGVenueSet` for paginated fetching.
+`SGAPI` provides model classes `SGKEvent`, `SGPerformer`, `SGVenue`, and item set 
+classes `SGKEventSet`, `SGPerformerSet`, `SGVenueSet` for paginated fetching.
 
 ```objc
 #import <SGAPI/SGAPI>
@@ -20,12 +20,12 @@ classes `SGEventSet`, `SGPerformerSet`, `SGVenueSet` for paginated fetching.
 
 ### Fetching Events 
 
-Create `SGEventSet` instances to fetch paginated `SGKEvents` results. See the 
+Create `SGKEventSet` instances to fetch paginated `SGKEvent` results. See the 
 [SeatGeek Platform docs](http://platform.seatgeek.com/#events) for available query parameters.
 
 ```objc
 // find all 'new york mets' events
-SGEventSet *events = SGEventSet.eventsSet;
+SGKEventSet *events = SGKEventSet.eventsSet;
 events.query.search = @"new york mets";
 events.query.perPage = 30;
 ```
@@ -35,7 +35,7 @@ block property is called when a request fails.
    
 ```objc
 events.onPageLoaded = ^(NSOrderedSet *results) {
-    for (SGKEvents *event in results) {
+    for (SGKEvent *event in results) {
         NSLog(@"event: %@", event.title);
     }
 };
@@ -99,7 +99,7 @@ venues.onPageLoaded = ^(NSOrderedSet *results) {
 
 ### Familiar Item Set Properties
 
-Item sets (`SGEventSet`, `SGPerformerSet`, `SGVenueSet`) support subscripting and common set
+Item sets (`SGKEventSet`, `SGPerformerSet`, `SGVenueSet`) support subscripting and common set
 properties.
 
 ```objc
@@ -114,13 +114,13 @@ if (events.count >= 3) {
     NSLog(@"third event: %@", [events[2] title]);
 }
 
-// iterate over an NSArray of SGKEvents in the set
-for (SGKEvents *event in events.array) {
+// iterate over an NSArray of SGKEvent in the set
+for (SGKEvent *event in events.array) {
     NSLog(@"event: %@", event.title);
 }
 
-// iterate over an NSOrderedSet of SGKEvents in the set
-for (SGKEvents *event in events.orderedSet) {
+// iterate over an NSOrderedSet of SGKEvent in the set
+for (SGKEvent *event in events.orderedSet) {
     NSLog(@"event: %@", event.title);
 }
 ```
