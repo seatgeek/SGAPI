@@ -3,6 +3,6 @@
 //
 
 #import "SGQuery.h"
-#import "SGEventSet.h"
+#import "SGKEventSet.h"
 #import "SGPerformerSet.h"
 #import "SGVenueSet.h"

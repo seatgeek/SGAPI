@@ -14,7 +14,7 @@
 		C9B48518195DCE6A00285C8B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B48517195DCE6A00285C8B /* main.m */; };
 		C9B4851B195DCE6A00285C8B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B4851A195DCE6A00285C8B /* AppDelegate.m */; };
 		C9B4851D195DCE6A00285C8B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9B4851C195DCE6A00285C8B /* Images.xcassets */; };
-		C9B48533195DCEC900285C8B /* SGEventSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B48532195DCEC900285C8B /* SGEventSetTests.m */; };
+		C9B48533195DCEC900285C8B /* SGKEventSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B48532195DCEC900285C8B /* SGKEventSetTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +40,7 @@
 		C9B4851C195DCE6A00285C8B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C9B48522195DCE6A00285C8B /* TestsAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestsAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9B48527195DCE6A00285C8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C9B48532195DCEC900285C8B /* SGEventSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGEventSetTests.m; sourceTree = "<group>"; };
+		C9B48532195DCEC900285C8B /* SGKEventSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGKEventSetTests.m; sourceTree = "<group>"; };
 		C9B48534195DCED100285C8B /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,7 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				C9474DE4195DD707007E92DD /* SGQueryTests.m */,
-				C9B48532195DCEC900285C8B /* SGEventSetTests.m */,
+				C9B48532195DCEC900285C8B /* SGKEventSetTests.m */,
 				C9474DE6195DD96A007E92DD /* SGPerformerSetTests.m */,
 				C9B48526195DCE6A00285C8B /* Supporting Files */,
 			);
@@ -197,6 +197,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = C9B48509195DCE6A00285C8B;
@@ -307,7 +308,7 @@
 			files = (
 				C9474DE5195DD707007E92DD /* SGQueryTests.m in Sources */,
 				C9474DE7195DD96A007E92DD /* SGPerformerSetTests.m in Sources */,
-				C9B48533195DCEC900285C8B /* SGEventSetTests.m in Sources */,
+				C9B48533195DCEC900285C8B /* SGKEventSetTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

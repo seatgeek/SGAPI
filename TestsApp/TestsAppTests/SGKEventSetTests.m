@@ -1,5 +1,5 @@
 //
-//  SGEventSetTests.m
+//  SGKEventSetTests.m
 //  SGPlatformTests
 //
 //  Created by Matt Greenfield on 27/06/14.
@@ -12,11 +12,11 @@
 #import <Expecta/Expecta.h>
 #import <SGAPI/SGAPI.h>
 
-@interface SGEventSetTests : XCTestCase
+@interface SGKEventSetTests : XCTestCase
 
 @end
 
-@implementation SGEventSetTests
+@implementation SGKEventSetTests
 
 + (void)setUp {
     [super setUp];
@@ -28,10 +28,10 @@
 }
 
 - (void)testMetsEvents {
-    SGEventSet *events = SGEventSet.eventsSet;
+    SGEKventSet *events = SGEKventSet.eventsSet;
     events.query.search = @"new york mets";
 
-    __weak SGEventSet *wEvents = events;
+    __weak SGEKventSet *wEvents = events;
     events.onPageLoaded = ^(NSOrderedSet *results) {
         expect(wEvents.fetching).to.beFalsy();
         expect(wEvents.count).will.beGreaterThan(0);

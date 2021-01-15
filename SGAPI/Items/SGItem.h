@@ -10,7 +10,7 @@
 
 /**
 * `SGItem` is the abstract model class for result items. The concrete models
-* are <SGEvent>, <SGPerformer>, <SGVenue>.
+* are <SGKEvent>, <SGPerformer>, <SGVenue>.
 */
 
 @interface SGItem : NSObject <NSCoding>

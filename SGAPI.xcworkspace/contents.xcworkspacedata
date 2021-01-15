@@ -36,10 +36,10 @@
          location = "group:Items"
          name = "Items">
          <FileRef
-            location = "group:SGEvent.h">
+            location = "group:SGKEvent.h">
          </FileRef>
          <FileRef
-            location = "group:SGEvent.m">
+            location = "group:SGKEvent.m">
          </FileRef>
          <FileRef
             location = "group:SGItem.h">
@@ -64,10 +64,10 @@
          location = "group:ItemSets"
          name = "ItemSets">
          <FileRef
-            location = "group:SGEventSet.h">
+            location = "group:SGKEventSet.h">
          </FileRef>
          <FileRef
-            location = "group:SGEventSet.m">
+            location = "group:SGKEventSet.m">
          </FileRef>
          <FileRef
             location = "group:SGItemSet.h">
