@@ -10,6 +10,10 @@
 #import "SGDataManager.h"
 #import <MGEvents/NSObject+MGEvents.h>
 
+NSString * const SGItemSetFetchStarted = @"SGItemSetFetchStarted";
+NSString * const SGItemSetFetchSucceeded = @"SGItemSetFetchSucceeded";
+NSString * const SGItemSetFetchFailed = @"SGItemSetFetchFailed";
+
 @interface SGItemSet ()
 @property (nonatomic, strong) NSMutableOrderedSet *items;
 @property (nonatomic, strong) NSDictionary *meta;

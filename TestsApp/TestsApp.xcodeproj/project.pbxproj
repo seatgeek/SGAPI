@@ -46,7 +46,7 @@
 		C9B48522195DCE6A00285C8B /* TestsAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestsAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9B48527195DCE6A00285C8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9B48532195DCEC900285C8B /* SGKEventSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGKEventSetTests.m; sourceTree = "<group>"; };
-		C9B48534195DCED100285C8B /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		C9B48534195DCED100285C8B /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E4FACCD02DFEDB1DBE4AE3D9 /* libPods-TestsAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestsAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F774221B27BEA9BD2ECE9300 /* libPods-TestsApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestsApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */

@@ -5,11 +5,11 @@
 @import Foundation.NSDictionary;
 @import Foundation.NSOrderedSet;
 
-#import <SGAPI/SGItem.h>
+#import "SGItem.h"
 
-#define SGItemSetFetchStarted @"SGItemSetFetchStarted"
-#define SGItemSetFetchSucceeded @"SGItemSetFetchSucceeded"
-#define SGItemSetFetchFailed @"SGItemSetFetchFailed"
+FOUNDATION_EXPORT NSString * _Nonnull const SGItemSetFetchStarted;
+FOUNDATION_EXPORT NSString * _Nonnull const SGItemSetFetchSucceeded;
+FOUNDATION_EXPORT NSString * _Nonnull const SGItemSetFetchFailed;
 
 @class SGQuery, SGDataManager;
 
