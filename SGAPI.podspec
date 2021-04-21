@@ -10,4 +10,9 @@ Pod::Spec.new do |s|
   s.source_files = "SGAPI/**/*.{h,m}"
   s.requires_arc = true
   s.dependency "SGHTTPRequest/Core", '>= 1.9'
+  s.prefix_header_file = false
+  s.module_map = 'SGAPI/SGAPI.modulemap'
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+  }
 end

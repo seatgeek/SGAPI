@@ -3,6 +3,8 @@
 //
 
 #import "SGPerformerSet.h"
+#import "SGQuery.h"
+#import "SGPerformer.h"
 
 @implementation SGPerformerSet
 

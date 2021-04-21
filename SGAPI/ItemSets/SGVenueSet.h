@@ -3,8 +3,6 @@
 //
 
 #import "SGItemSet.h"
-#import "SGQuery.h"
-#import "SGVenue.h"
 
 /**
 `SGVenueSet` provides paginated results of `SGVenue` items by quering the

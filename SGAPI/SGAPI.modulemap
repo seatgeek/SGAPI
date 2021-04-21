@@ -1,0 +1,6 @@
+module SGAPI {
+  umbrella header "SGAPI.h"
+
+  export *
+  module * { export * }
+}

@@ -2,10 +2,14 @@
 //  Created by matt on 7/01/13.
 //
 
-#define SGItemFetchStarted @"SGItemFetchStarted"
-#define SGItemFetchSucceeded @"SGItemFetchSucceeded"
-#define SGItemFetchFailed @"SGItemFetchFailed"
+@import Foundation.NSString;
+@import Foundation.NSDateInterval;
+@import Foundation.NSDateFormatter;
 
+FOUNDATION_EXPORT NSString * _Nonnull const SGItemFetchStarted;
+FOUNDATION_EXPORT NSString * _Nonnull const SGItemFetchSucceeded;
+FOUNDATION_EXPORT NSString * _Nonnull const SGItemFetchFailed;
+ 
 @class SGItemSet, SGQuery, SGDataManager, SGFileCache;
 
 /**

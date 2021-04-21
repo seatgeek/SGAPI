@@ -2,7 +2,9 @@
 //  Created by matt on 18/01/14.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation.NSDictionary;
+@import Foundation.NSOrderedSet;
+
 #import <SGAPI/SGItem.h>
 
 #define SGItemSetFetchStarted @"SGItemSetFetchStarted"

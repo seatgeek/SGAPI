@@ -2,7 +2,8 @@
 //  Created by matt on 27/05/14.
 //
 
-#import <CoreLocation/CoreLocation.h>
+@import CoreLocation;
+
 #ifndef SGHTTPREQUEST
 #define SGHTTPREQUEST <SGHTTPRequest/SGHTTPRequest.h>
 #endif

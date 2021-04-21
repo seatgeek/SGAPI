@@ -5,6 +5,8 @@
 #import "SGKEventSet.h"
 #import "SGPerformer.h"
 #import "SGVenue.h"
+#import "SGKEvent.h"
+#import "SGQuery.h"
 
 @implementation SGKEventSet
 

@@ -3,6 +3,8 @@
 //
 
 #import "SGVenueSet.h"
+#import "SGQuery.h"
+#import "SGVenue.h"
 
 @implementation SGVenueSet
 

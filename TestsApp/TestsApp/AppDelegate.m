@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 SeatGeek. All rights reserved.
 //
 
+@import SGAPI;
+
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
@@ -21,6 +23,7 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    self.window.rootViewController = [[UIViewController alloc] init];
     return YES;
 }
 

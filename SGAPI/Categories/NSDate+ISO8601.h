@@ -6,7 +6,8 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation.NSDate;
+@import Foundation.NSString;
 
 @interface NSDate (ISO8601)
 - (NSString *)ISO8601;

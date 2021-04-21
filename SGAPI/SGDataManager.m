@@ -6,6 +6,8 @@
 //  Copyright © 2015 SeatGeek. All rights reserved.
 //
 
+@import Foundation;
+
 #import <MGEvents/MGEvents.h>
 #import "SGDataManager.h"
 #import "SGItemSet.h"

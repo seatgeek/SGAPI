@@ -3,8 +3,8 @@
 //
 
 #import "SGItemSet.h"
-#import "SGQuery.h"
-#import "SGKEvent.h"
+
+@class SGVenue, SGPerformer;
 
 /**
 `SGKEventSet` provides paginated results of `SGKEvent` items by quering the

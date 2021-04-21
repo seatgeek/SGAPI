@@ -9,6 +9,10 @@
 #import <MGEvents/NSObject+MGEvents.h>
 #import <SGHTTPRequest/SGFileCache.h>
 
+NSString * _Nonnull const SGItemFetchStarted = @"SGItemFetchStarted";
+NSString * _Nonnull const SGItemFetchSucceeded = @"SGItemFetchSucceeded";
+NSString * _Nonnull const SGItemFetchFailed = @"SGItemFetchFailed";
+
 static NSDateFormatter *_formatterLocal, *_formatterUTC;
 
 @interface SGItem ()

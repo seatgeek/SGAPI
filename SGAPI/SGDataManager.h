@@ -6,7 +6,7 @@
 //  Copyright © 2015 SeatGeek. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @class SGItemSet, SGItem;
 

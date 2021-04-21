@@ -3,9 +3,6 @@
 //
 
 #import "SGItemSet.h"
-#import "SGQuery.h"
-#import "SGPerformer.h"
-
 /**
 `SGPerformerSet` provides paginated results of `SGPerformer` items by quering the
 [/performers](http://platform.seatgeek.com/#performers) endpoint. `SGPerformerSet`

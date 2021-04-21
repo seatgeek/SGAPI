@@ -1,7 +1,12 @@
-xcodeproj 'TestsApp'
+project 'TestsApp'
 workspace '../SGAPI'
-link_with 'TestsAppTests'
-platform :ios, '7.0'
+platform :ios, '11.0'
 
-pod 'SGAPI', :path => '../'
-pod 'Expecta'
+target :'TestsApp' do
+    pod 'SGAPI', :path => '../'
+end
+
+target :'TestsAppTests' do
+    pod 'Expecta'
+    pod 'SGAPI', :path => '../'
+end

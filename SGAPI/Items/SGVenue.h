@@ -2,7 +2,9 @@
 //  Created by matt on 7/01/13.
 //
 
-#import <CoreLocation/CoreLocation.h>
+
+@import CoreLocation;
+
 #import "SGItem.h"
 
 /**

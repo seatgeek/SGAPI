@@ -2,3 +2,8 @@
 TestsApp/Pods
 Podfile.lock
 xcuserdata
+/.DS_Store
+/SGAPI.xcworkspace/xcshareddata
+/SGAPI/.DS_Store
+/TestsApp/.DS_Store
+/SGAPI.xcworkspace/contents.xcworkspacedata

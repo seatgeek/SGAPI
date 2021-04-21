@@ -8,9 +8,11 @@
 
 #define EXP_SHORTHAND YES
 
+@import SGAPI;
+
 #import <XCTest/XCTest.h>
 #import <Expecta/Expecta.h>
-#import <SGAPI/SGAPI.h>
+
 
 @interface SGKEventSetTests : XCTestCase
 
@@ -28,10 +30,10 @@
 }
 
 - (void)testMetsEvents {
-    SGEKventSet *events = SGEKventSet.eventsSet;
+    SGKEventSet *events = SGKEventSet.eventsSet;
     events.query.search = @"new york mets";
 
-    __weak SGEKventSet *wEvents = events;
+    __weak SGKEventSet *wEvents = events;
     events.onPageLoaded = ^(NSOrderedSet *results) {
         expect(wEvents.fetching).to.beFalsy();
         expect(wEvents.count).will.beGreaterThan(0);

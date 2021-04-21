@@ -6,6 +6,10 @@
 //
 //
 
+@import Foundation.NSDateFormatter;
+@import Foundation.NSLocale;
+@import Dispatch;
+
 #import "NSDate+ISO8601.h"
 
 @implementation NSDate (ISO8601)
