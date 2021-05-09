@@ -2,11 +2,8 @@
 //  Created by matt on 27/05/14.
 //
 
-#import <CoreLocation/CoreLocation.h>
-#ifndef SGHTTPREQUEST
-#define SGHTTPREQUEST <SGHTTPRequest/SGHTTPRequest.h>
-#endif
-#import SGHTTPREQUEST
+@import CoreLocation;
+@import SGHTTPRequest;
 
 #define SGAPI_BASEFORMAT @"https://api.%@/2"
 #define SGAPI_BASEDOMAIN @"seatgeek.com"
