@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SGAPI"
-  s.version      = "1.4.0"
+  s.version      = "1.5.0"
   s.summary      = "An iOS SDK for querying the SeatGeek Platform web service."
   s.homepage     = "http://platform.seatgeek.com"
   s.license      = { :type => "BSD", :file => "LICENSE" }
