@@ -50,11 +50,6 @@ Either the same as <name> or a shortened name if one is available.
 @property (nonatomic, readonly, copy) NSString *imageURL;
 
 /**
-* URLs for images of the performer at varying sizes.
-*/
-@property (nonatomic, readonly, strong) NSDictionary *images;
-
-/**
 * Links to the performer on other services across the web.
 */
 @property (nonatomic, readonly, strong) NSArray *links;

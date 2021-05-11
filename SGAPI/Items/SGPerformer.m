@@ -18,7 +18,6 @@
             @"imageURL":@"image",
             @"stats":@"stats",
             @"taxonomies":@"taxonomies",
-            @"images":@"images",
             @"links":@"links",
             @"homeVenueId":@"home_venue_id",
             @"hasUpcomingEvents":@"has_upcoming_events"
